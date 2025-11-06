@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InstaCore.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b58c5e2ab8f3bf21aead647130276faec99e6ee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a0d1dd2b69067299a5c0c20631ac889b0e0c491")]
 [assembly: System.Reflection.AssemblyProductAttribute("InstaCore.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InstaCore.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
