@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InstaCore.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b58c5e2ab8f3bf21aead647130276faec99e6ee")]
 [assembly: System.Reflection.AssemblyProductAttribute("InstaCore.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InstaCore.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

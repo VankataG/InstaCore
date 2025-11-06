@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InstaCore.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b58c5e2ab8f3bf21aead647130276faec99e6ee")]
 [assembly: System.Reflection.AssemblyProductAttribute("InstaCore.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InstaCore.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
