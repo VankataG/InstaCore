@@ -1,0 +1,91 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\source\\InstaCore\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A5D94CD6-3C31-4BB7-A2FE-908A9E9D6C07}|InstaCore.Infrastructure\\InstaCore.Infrastructure.csproj|d:\\source\\instacore\\instacore.infrastructure\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A5D94CD6-3C31-4BB7-A2FE-908A9E9D6C07}|InstaCore.Infrastructure\\InstaCore.Infrastructure.csproj|solutionrelative:instacore.infrastructure\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{893EE685-127C-4228-88BA-02BC1FF64CE0}|InstaCore.Core\\InstaCore.Core.csproj|d:\\source\\instacore\\instacore.core\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{893EE685-127C-4228-88BA-02BC1FF64CE0}|InstaCore.Core\\InstaCore.Core.csproj|solutionrelative:instacore.core\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{714DDE3C-651E-4D28-9599-51B7F94AB9F9}|InstaCore.Api\\InstaCore.Api.csproj|d:\\source\\instacore\\instacore.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{714DDE3C-651E-4D28-9599-51B7F94AB9F9}|InstaCore.Api\\InstaCore.Api.csproj|solutionrelative:instacore.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{f4fc5ff1-28ef-4b04-ad02-6b298310ccc7}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0174dea2-fdbe-4ef1-8f99-c0beae78880f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "D:\\source\\InstaCore\\InstaCore.Infrastructure\\Class1.cs",
+              "RelativeDocumentMoniker": "InstaCore.Infrastructure\\Class1.cs",
+              "ToolTip": "D:\\source\\InstaCore\\InstaCore.Infrastructure\\Class1.cs",
+              "RelativeToolTip": "InstaCore.Infrastructure\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T05:18:31.289Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "D:\\source\\InstaCore\\InstaCore.Core\\Class1.cs",
+              "RelativeDocumentMoniker": "InstaCore.Core\\Class1.cs",
+              "ToolTip": "D:\\source\\InstaCore\\InstaCore.Core\\Class1.cs",
+              "RelativeToolTip": "InstaCore.Core\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T05:18:11.627Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\source\\InstaCore\\InstaCore.Api\\Program.cs",
+              "RelativeDocumentMoniker": "InstaCore.Api\\Program.cs",
+              "ToolTip": "D:\\source\\InstaCore\\InstaCore.Api\\Program.cs",
+              "RelativeToolTip": "InstaCore.Api\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T05:17:10.164Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
