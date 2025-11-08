@@ -26,7 +26,7 @@ namespace InstaCore.Infrastructure.Configuration
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Comments)
                 .HasForeignKey(c => c.PostId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity
                 .Property(c => c.CreatedAt)

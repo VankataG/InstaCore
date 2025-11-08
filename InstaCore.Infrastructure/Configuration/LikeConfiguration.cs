@@ -15,7 +15,7 @@ namespace InstaCore.Infrastructure.Configuration
                 .HasOne(l => l.User)
                 .WithMany(u => u.Likes)
                 .HasForeignKey(u => u.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity
                 .HasOne(l => l.Post)
