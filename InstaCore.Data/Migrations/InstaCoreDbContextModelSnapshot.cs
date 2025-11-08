@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace InstaCore.Infrastructure.Migrations
+namespace InstaCore.Data.Migrations
 {
     [DbContext(typeof(InstaCoreDbContext))]
     partial class InstaCoreDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace InstaCore.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Comment", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace InstaCore.Infrastructure.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Follow", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Follow", b =>
                 {
                     b.Property<Guid>("FollowerId")
                         .HasColumnType("uniqueidentifier");
@@ -73,7 +73,7 @@ namespace InstaCore.Infrastructure.Migrations
                     b.ToTable("Follows");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Like", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Like", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +99,7 @@ namespace InstaCore.Infrastructure.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Post", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Post", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,7 +129,7 @@ namespace InstaCore.Infrastructure.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.User", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,15 +168,15 @@ namespace InstaCore.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Comment", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Comment", b =>
                 {
-                    b.HasOne("InstaCore.Infrastructure.Models.Post", "Post")
+                    b.HasOne("InstaCore.Core.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("InstaCore.Infrastructure.Models.User", "User")
+                    b.HasOne("InstaCore.Core.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -187,15 +187,15 @@ namespace InstaCore.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Follow", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Follow", b =>
                 {
-                    b.HasOne("InstaCore.Infrastructure.Models.User", "Followee")
+                    b.HasOne("InstaCore.Core.Models.User", "Followee")
                         .WithMany("Followers")
                         .HasForeignKey("FolloweeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("InstaCore.Infrastructure.Models.User", "Follower")
+                    b.HasOne("InstaCore.Core.Models.User", "Follower")
                         .WithMany("Following")
                         .HasForeignKey("FollowerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -206,15 +206,15 @@ namespace InstaCore.Infrastructure.Migrations
                     b.Navigation("Follower");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Like", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Like", b =>
                 {
-                    b.HasOne("InstaCore.Infrastructure.Models.Post", "Post")
+                    b.HasOne("InstaCore.Core.Models.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("InstaCore.Infrastructure.Models.User", "User")
+                    b.HasOne("InstaCore.Core.Models.User", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -225,9 +225,9 @@ namespace InstaCore.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Post", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Post", b =>
                 {
-                    b.HasOne("InstaCore.Infrastructure.Models.User", "User")
+                    b.HasOne("InstaCore.Core.Models.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -236,14 +236,14 @@ namespace InstaCore.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.Post", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.Post", b =>
                 {
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
                 });
 
-            modelBuilder.Entity("InstaCore.Infrastructure.Models.User", b =>
+            modelBuilder.Entity("InstaCore.Core.Models.User", b =>
                 {
                     b.Navigation("Comments");
 
