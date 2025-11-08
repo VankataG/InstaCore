@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36511.14 d17.14
+VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaCore.Api", "InstaCore.Api\InstaCore.Api.csproj", "{714DDE3C-651E-4D28-9599-51B7F94AB9F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaCore.Core", "InstaCore.Core\InstaCore.Core.csproj", "{893EE685-127C-4228-88BA-02BC1FF64CE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaCore.Infrastructure", "InstaCore.Infrastructure\InstaCore.Infrastructure.csproj", "{A5D94CD6-3C31-4BB7-A2FE-908A9E9D6C07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaCore.Data", "InstaCore.Data\InstaCore.Data.csproj", "{164135A4-8755-493A-B2C1-4A27205AB230}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{A5D94CD6-3C31-4BB7-A2FE-908A9E9D6C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5D94CD6-3C31-4BB7-A2FE-908A9E9D6C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5D94CD6-3C31-4BB7-A2FE-908A9E9D6C07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{164135A4-8755-493A-B2C1-4A27205AB230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{164135A4-8755-493A-B2C1-4A27205AB230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{164135A4-8755-493A-B2C1-4A27205AB230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{164135A4-8755-493A-B2C1-4A27205AB230}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

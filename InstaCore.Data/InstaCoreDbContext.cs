@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using InstaCore.Infrastructure.Data.Models;
+using InstaCore.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace InstaCore.Infrastructure.Data
+namespace InstaCore.Data
 {
     public class InstaCoreDbContext : DbContext
     {

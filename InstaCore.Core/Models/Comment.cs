@@ -1,4 +1,4 @@
-﻿namespace InstaCore.Infrastructure.Data.Models
+﻿namespace InstaCore.Core.Models
 {
     public class Comment
     {

@@ -1,8 +1,8 @@
-﻿using InstaCore.Infrastructure.Data.Models;
+﻿using InstaCore.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace InstaCore.Infrastructure.Data.Configuration
+namespace InstaCore.Data.Configuration
 {
     public class FollowConfiguration : IEntityTypeConfiguration<Follow>
     {

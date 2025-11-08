@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace InstaCore.Infrastructure.Migrations
+namespace InstaCore.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
