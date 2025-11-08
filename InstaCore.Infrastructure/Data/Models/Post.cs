@@ -1,4 +1,4 @@
-﻿namespace InstaCore.Infrastructure.Models
+﻿namespace InstaCore.Infrastructure.Data.Models
 {
     public class Post
     {

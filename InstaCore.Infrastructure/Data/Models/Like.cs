@@ -1,6 +1,6 @@
-﻿namespace InstaCore.Infrastructure.Models
+﻿namespace InstaCore.Infrastructure.Data.Models
 {
-    public class Comment
+    public class Like
     {
         public Guid Id { get; set; }
 
@@ -12,10 +12,6 @@
 
         public required User User { get; set; }
 
-        public required string Text { get; set; }
-
         public DateTime CreatedAt { get; set; }
-
-
     }
 }

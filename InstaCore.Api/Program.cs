@@ -1,5 +1,4 @@
-
-using InstaCore.Infrastructure;
+using InstaCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace InstaCore.Api

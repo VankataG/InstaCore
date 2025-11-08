@@ -1,8 +1,8 @@
-﻿using InstaCore.Infrastructure.Models;
+﻿using InstaCore.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace InstaCore.Infrastructure.Configuration
+namespace InstaCore.Infrastructure.Data.Configuration
 {
     public class LikeConfiguration : IEntityTypeConfiguration<Like>
     {
