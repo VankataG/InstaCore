@@ -1,5 +1,11 @@
+using System.Text;
+using InstaCore.Core;
+using InstaCore.Core.Contracts;
 using InstaCore.Data;
+using InstaCore.Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace InstaCore.Api
 {
@@ -19,7 +25,36 @@ namespace InstaCore.Api
                     sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(3), null))
             );
 
+
             // Add services to the container.
+            builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+
+
+            //Add and configure Jwt
+            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+            builder.Services.AddSingleton<IJwtTokenService,JwtTokenService>();
+
+            JwtOptions jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
+
+            builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = jwt.Issuer,
+                        ValidAudience = jwt.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromSeconds(30)
+                    };
+                });
+
+            builder.Services.AddAuthorization();
+
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
