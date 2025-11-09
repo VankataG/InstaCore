@@ -1,4 +1,5 @@
-﻿using InstaCore.Core.Contracts;
+﻿using BCrypt.Net;
+using InstaCore.Core.Contracts;
 
 namespace InstaCore.Infrastructure.Security
 {
@@ -6,12 +7,12 @@ namespace InstaCore.Infrastructure.Security
     {
         public string Hash(string password)
         {
-            throw new NotImplementedException();
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
         public bool Verify(string password, string passwordHash)
         {
-            throw new NotImplementedException();
+            return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
     }
 }
