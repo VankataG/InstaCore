@@ -17,7 +17,7 @@ namespace InstaCore.Api
 
             var connectionString = 
                 builder.Configuration.GetConnectionString("InstaCore") ?? 
-                throw new InvalidOperationException("Connection string InstaCore not founf.");
+                throw new InvalidOperationException("Connection string InstaCore not found.");
 
             builder.Services.AddDbContext<InstaCoreDbContext>(options =>
                 options.UseSqlServer(
@@ -66,10 +66,14 @@ namespace InstaCore.Api
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
