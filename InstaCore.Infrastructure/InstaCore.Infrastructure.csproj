@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\InstaCore.Core\InstaCore.Core.csproj" />
     <ProjectReference Include="..\InstaCore.Data\InstaCore.Data.csproj" />
   </ItemGroup>
