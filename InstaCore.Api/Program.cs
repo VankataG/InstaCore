@@ -2,6 +2,7 @@ using System.Text;
 using InstaCore.Core;
 using InstaCore.Core.Contracts;
 using InstaCore.Data;
+using InstaCore.Infrastructure.Repositories;
 using InstaCore.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace InstaCore.Api
 
             // Add services to the container.
             builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
             //Add and configure Jwt
