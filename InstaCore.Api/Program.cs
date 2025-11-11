@@ -1,6 +1,7 @@
 using System.Text;
 using InstaCore.Core;
 using InstaCore.Core.Contracts;
+using InstaCore.Core.Services;
 using InstaCore.Data;
 using InstaCore.Infrastructure.Repositories;
 using InstaCore.Infrastructure.Security;
@@ -30,6 +31,7 @@ namespace InstaCore.Api
             // Add services to the container.
             builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
 
             //Add and configure Jwt
@@ -67,10 +69,10 @@ namespace InstaCore.Api
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                //app.MapOpenApi();
 
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                //app.UseSwagger();
+                //app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
