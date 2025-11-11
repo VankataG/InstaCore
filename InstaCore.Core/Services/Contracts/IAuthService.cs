@@ -1,6 +1,6 @@
 ﻿using InstaCore.Core.Dtos;
 
-namespace InstaCore.Core.Contracts
+namespace InstaCore.Core.Services.Contracts
 {
     public interface IAuthService
     {

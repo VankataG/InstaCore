@@ -2,6 +2,7 @@
 using InstaCore.Core.Dtos;
 using InstaCore.Core.Exceptions;
 using InstaCore.Core.Models;
+using InstaCore.Core.Services.Contracts;
 
 namespace InstaCore.Core.Services
 {

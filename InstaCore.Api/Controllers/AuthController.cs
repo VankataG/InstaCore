@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using InstaCore.Core.Contracts;
 using InstaCore.Core.Dtos;
 using InstaCore.Core.Exceptions;
+using InstaCore.Core.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InstaCore.Api.Controllers
