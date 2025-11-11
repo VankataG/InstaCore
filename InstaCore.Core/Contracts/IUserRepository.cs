@@ -8,6 +8,8 @@ namespace InstaCore.Core.Contracts
 
         Task<User?> GetByUsernameAsync(string username);
 
+        Task<User?> GetByIdAsync(Guid id);
+
         Task<bool> ExistsByEmailAsync(string email);
 
         Task<bool> ExistsByUsernameAsync(string username);
