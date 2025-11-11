@@ -1,0 +1,42 @@
+﻿using InstaCore.Core.Contracts;
+using InstaCore.Core.Dtos.Users;
+using InstaCore.Core.Exceptions;
+using InstaCore.Core.Models;
+using InstaCore.Core.Services.Contracts;
+
+namespace InstaCore.Core.Services
+{
+    public class UserService : IUserService
+    {
+        private readonly IUserRepository userRepository;
+
+        public UserService(IUserRepository userRepository)
+        {
+            this.userRepository = userRepository;
+        }
+
+
+        public async Task<UserResponse> GetByUsernameAsync(string username)
+        {
+            User? user = await userRepository.GetByUsernameAsync(username);
+
+            if (user == null)
+            {
+                throw new ConflictException("User not found");
+            }
+
+            return new UserResponse()
+            { 
+                Id = user!.Id,
+                Username = user.Username,
+                Bio = user.Bio,
+                AvatarUrl = user.AvatarUrl
+            };
+        }
+
+        public Task<UserResponse> GetMeAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
