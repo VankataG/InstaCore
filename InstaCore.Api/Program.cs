@@ -11,6 +11,7 @@ using InstaCore.Core.Services;
 using InstaCore.Data;
 using InstaCore.Infrastructure.Repositories;
 using InstaCore.Infrastructure.Security;
+using InstaCore.Core.Services.Contracts;
 
 
 
@@ -37,6 +38,7 @@ namespace InstaCore.Api
             builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
 
             //Add and configure Jwt
