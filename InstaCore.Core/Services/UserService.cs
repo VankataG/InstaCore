@@ -1,6 +1,7 @@
 ﻿using InstaCore.Core.Contracts;
 using InstaCore.Core.Dtos.Users;
 using InstaCore.Core.Exceptions;
+using InstaCore.Core.Mapping;
 using InstaCore.Core.Models;
 using InstaCore.Core.Services.Contracts;
 
@@ -22,43 +23,31 @@ namespace InstaCore.Core.Services
 
             if (user == null)
             {
-                throw new ConflictException("User not found");
+                throw new NotFoundException("User not found");
             }
 
-            return new UserResponse()
-            { 
-                Id = user!.Id,
-                Username = user.Username,
-                Bio = user.Bio,
-                AvatarUrl = user.AvatarUrl
-            };
+            return UserMapper.ToResponse(user);
         }
 
-        public async Task<UserResponse> GetMeAsync(string userId)
+        public async Task<UserResponse> GetMeAsync(Guid userId)
         {
             User? myProfile = await userRepository.GetByIdAsync(userId);
 
             if (myProfile == null)
             {
-                throw new ConflictException("User not found");
+                throw new NotFoundException("User not found");
             }
 
-            return new UserResponse()
-            {
-                Id = myProfile!.Id,
-                Username = myProfile.Username,
-                Bio = myProfile.Bio,
-                AvatarUrl = myProfile.AvatarUrl
-            };
+            return UserMapper.ToResponse(myProfile);
         }
 
-        public async Task<UserResponse> UpdateProfileAsync(string userId, UpdateProfileRequest request)
+        public async Task<UserResponse> UpdateProfileAsync(Guid userId, UpdateProfileRequest request)
         {
             User? myProfile = await userRepository.GetByIdAsync(userId);
 
             if (myProfile == null)
             {
-                throw new ConflictException("User not found");
+                throw new NotFoundException("User not found");
             }
 
             myProfile.Bio = request.Bio;
@@ -66,13 +55,7 @@ namespace InstaCore.Core.Services
             await userRepository.UpdateAsync(myProfile);
 
 
-            return new UserResponse() 
-            { 
-                Id = myProfile!.Id, 
-                Username = myProfile.Username, 
-                Bio = myProfile.Bio, 
-                AvatarUrl = myProfile.AvatarUrl
-            };
+            return UserMapper.ToResponse(myProfile);
         }
     }
 }

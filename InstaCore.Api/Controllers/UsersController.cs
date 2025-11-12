@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using InstaCore.Core.Dtos.Users;
 using InstaCore.Core.Exceptions;
@@ -24,7 +25,10 @@ namespace InstaCore.Api.Controllers
         [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUser()
         {
-            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (!Guid.TryParse(sub, out var userId))
+                return Unauthorized();
 
             try
             {
@@ -32,7 +36,7 @@ namespace InstaCore.Api.Controllers
 
                 return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
             }
-            catch (ConflictException ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(new { title = "Not found", detail = ex.Message });
             }
@@ -48,7 +52,7 @@ namespace InstaCore.Api.Controllers
                 UserResponse response = await userService.GetByUsernameAsync(username);
                 return Ok(new { response.Username, response.Bio, response.AvatarUrl });
             }
-            catch (ConflictException ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(new { title = "Not found", detail = ex.Message });
             }
@@ -57,7 +61,10 @@ namespace InstaCore.Api.Controllers
         [HttpPut("me")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
         {
-            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (!Guid.TryParse(sub, out var userId))
+                return Unauthorized();
 
             try
             {
@@ -65,7 +72,7 @@ namespace InstaCore.Api.Controllers
 
                 return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
             }
-            catch (ConflictException ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(new { title = "Not found", detail = ex.Message });
             }

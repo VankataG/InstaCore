@@ -40,13 +40,13 @@ namespace InstaCore.Infrastructure.Repositories
                 .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
         }
 
-        public async Task<User?> GetByIdAsync(string id)
+        public async Task<User?> GetByIdAsync(Guid id)
         {
             return await 
                 dbContext
                 .Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id.ToString() == id);
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<User?> GetByUsernameAsync(string username)
