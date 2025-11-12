@@ -24,11 +24,18 @@ namespace InstaCore.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetCurrentUser()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            UserResponse response = await userService.GetMeAsync(userId);
+            try
+            {
+                UserResponse response = await userService.GetMeAsync(userId);
 
-            return Ok(new { userId, response.Username, response.Bio, response.AvatarUrl});
+                return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
+            }
+            catch (ConflictException ex)
+            {
+                return NotFound(new { title = "Not found", detail = ex.Message });
+            }
         }
 
 

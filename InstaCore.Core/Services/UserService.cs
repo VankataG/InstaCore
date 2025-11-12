@@ -34,9 +34,22 @@ namespace InstaCore.Core.Services
             };
         }
 
-        public Task<UserResponse> GetMeAsync(string userId)
+        public async Task<UserResponse> GetMeAsync(string userId)
         {
-            throw new NotImplementedException();
+            User? myProfile = await userRepository.GetByIdAsync(userId);
+
+            if (myProfile == null)
+            {
+                throw new ConflictException("User not found");
+            }
+
+            return new UserResponse()
+            {
+                Id = myProfile!.Id,
+                Username = myProfile.Username,
+                Bio = myProfile.Bio,
+                AvatarUrl = myProfile.AvatarUrl
+            };
         }
     }
 }
