@@ -1,4 +1,5 @@
 using System.Text;
+using System.Security.Claims;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using InstaCore.Data;
 using InstaCore.Infrastructure.Repositories;
 using InstaCore.Infrastructure.Security;
 using InstaCore.Core.Services.Contracts;
+using System.IdentityModel.Tokens.Jwt;
 
 
 
@@ -51,6 +53,8 @@ namespace InstaCore.Api
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+                    options.MapInboundClaims = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidIssuer = jwt.Issuer,
@@ -60,7 +64,10 @@ namespace InstaCore.Api
                         ValidateAudience = true,
                         ValidateIssuerSigningKey = true,
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromSeconds(30)
+                        ClockSkew = TimeSpan.FromSeconds(30),
+
+                        NameClaimType = JwtRegisteredClaimNames.Sub,
+                        RoleClaimType = ClaimTypes.Role
                     };
                 });
 
