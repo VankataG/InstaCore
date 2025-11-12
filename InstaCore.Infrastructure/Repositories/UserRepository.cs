@@ -23,12 +23,12 @@ namespace InstaCore.Infrastructure.Repositories
 
         public async Task<bool> ExistsByEmailAsync(string email)
         {
-            return await dbContext.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());
+            return await dbContext.Users.AnyAsync(u => u.Email == email.ToLower());
         }
 
         public async Task<bool> ExistsByUsernameAsync(string username)
         {
-            return await dbContext.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower());
+            return await dbContext.Users.AnyAsync(u => u.Username == username.Trim());
         }
 
         public async Task<User?> GetByEmailAsync(string email)
@@ -37,7 +37,7 @@ namespace InstaCore.Infrastructure.Repositories
                 dbContext
                 .Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+                .FirstOrDefaultAsync(u => u.Email == email.ToLower());
         }
 
         public async Task<User?> GetByIdAsync(Guid id)
@@ -55,7 +55,7 @@ namespace InstaCore.Infrastructure.Repositories
                 dbContext
                 .Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u =>u.Username.ToLower() == username.ToLower());
+                .FirstOrDefaultAsync(u =>u.Username == username.Trim());
         }
 
         public async Task UpdateAsync(User user)

@@ -54,8 +54,8 @@ namespace InstaCore.Core.Services
 
             User newUser = new User()
             {
-                Username = request.Username,
-                Email = request.Email,
+                Username = request.Username.Trim(),
+                Email = request.Email.ToLower(),
                 PasswordHash = hashedPassword
             };
 
