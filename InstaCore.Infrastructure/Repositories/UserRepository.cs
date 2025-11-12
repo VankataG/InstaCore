@@ -57,5 +57,11 @@ namespace InstaCore.Infrastructure.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u =>u.Username.ToLower() == username.ToLower());
         }
+
+        public async Task UpdateAsync(User user)
+        {
+            dbContext.Users.Update(user);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

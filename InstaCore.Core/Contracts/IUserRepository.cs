@@ -15,5 +15,7 @@ namespace InstaCore.Core.Contracts
         Task<bool> ExistsByUsernameAsync(string username);
 
         Task AddAsync(User user);
+
+        Task UpdateAsync(User user);
     }
 }

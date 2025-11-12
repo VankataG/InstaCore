@@ -7,5 +7,7 @@ namespace InstaCore.Core.Services.Contracts
         Task<UserResponse> GetByUsernameAsync(string username);
 
         Task<UserResponse> GetMeAsync(string userId);
+
+        Task<UserResponse> UpdateProfileAsync(string userId, UpdateProfileRequest request);
     }
 }

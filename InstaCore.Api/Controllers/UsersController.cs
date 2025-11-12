@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InstaCore.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
@@ -21,7 +22,6 @@ namespace InstaCore.Api.Controllers
 
 
         [HttpGet("me")]
-        [Authorize]
         public async Task<IActionResult> GetCurrentUser()
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -40,6 +40,7 @@ namespace InstaCore.Api.Controllers
 
 
         [HttpGet("{username}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetPublicProfile(string username)
         {
             try
@@ -51,9 +52,23 @@ namespace InstaCore.Api.Controllers
             {
                 return NotFound(new { title = "Not found", detail = ex.Message });
             }
-            
+        }
 
-            
+        [HttpPut("me")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
+        {
+            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            try
+            {
+                UserResponse response = await userService.UpdateProfileAsync(userId, request);
+
+                return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
+            }
+            catch (ConflictException ex)
+            {
+                return NotFound(new { title = "Not found", detail = ex.Message });
+            }
         }
     }
 }

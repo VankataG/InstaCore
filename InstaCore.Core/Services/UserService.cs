@@ -51,5 +51,28 @@ namespace InstaCore.Core.Services
                 AvatarUrl = myProfile.AvatarUrl
             };
         }
+
+        public async Task<UserResponse> UpdateProfileAsync(string userId, UpdateProfileRequest request)
+        {
+            User? myProfile = await userRepository.GetByIdAsync(userId);
+
+            if (myProfile == null)
+            {
+                throw new ConflictException("User not found");
+            }
+
+            myProfile.Bio = request.Bio;
+            myProfile.AvatarUrl = request.AvatarUrl;
+            await userRepository.UpdateAsync(myProfile);
+
+
+            return new UserResponse() 
+            { 
+                Id = myProfile!.Id, 
+                Username = myProfile.Username, 
+                Bio = myProfile.Bio, 
+                AvatarUrl = myProfile.AvatarUrl
+            };
+        }
     }
 }
