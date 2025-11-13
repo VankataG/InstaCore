@@ -1,9 +1,8 @@
-﻿using InstaCore.Core.Contracts;
-using InstaCore.Core.Models;
+﻿using InstaCore.Core.Models;
 using InstaCore.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace InstaCore.Infrastructure.Repositories
+namespace InstaCore.Core.Contracts
 {
     public class UserRepository : IUserRepository
     {

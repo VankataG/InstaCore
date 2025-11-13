@@ -10,7 +10,6 @@ using InstaCore.Core;
 using InstaCore.Core.Contracts;
 using InstaCore.Core.Services;
 using InstaCore.Data;
-using InstaCore.Infrastructure.Repositories;
 using InstaCore.Infrastructure.Security;
 using InstaCore.Core.Services.Contracts;
 using System.IdentityModel.Tokens.Jwt;
