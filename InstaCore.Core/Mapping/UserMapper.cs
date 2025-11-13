@@ -10,7 +10,9 @@ namespace InstaCore.Core.Mapping
             Id = user.Id,
             Username = user.Username,
             Bio = user.Bio,
-            AvatarUrl = user.AvatarUrl
+            AvatarUrl = user.AvatarUrl,
+            Followers = user.Followers.Count(),
+            Following = user.Following.Count(),
         };
     }
 }

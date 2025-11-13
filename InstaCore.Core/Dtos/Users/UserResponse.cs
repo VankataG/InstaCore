@@ -9,5 +9,9 @@
         public string? Bio { get; set; }
 
         public string? AvatarUrl { get; set; }
+
+        public int Followers { get; set; }
+
+        public int Following { get; set; }
     }
 }

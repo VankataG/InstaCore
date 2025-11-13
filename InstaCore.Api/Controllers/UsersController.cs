@@ -34,7 +34,7 @@ namespace InstaCore.Api.Controllers
             {
                 UserResponse response = await userService.GetMeAsync(userId);
 
-                return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
+                return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
             }
             catch (NotFoundException ex)
             {
@@ -50,7 +50,7 @@ namespace InstaCore.Api.Controllers
             try
             {
                 UserResponse response = await userService.GetByUsernameAsync(username);
-                return Ok(new { response.Username, response.Bio, response.AvatarUrl });
+                return Ok(new { response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
             }
             catch (NotFoundException ex)
             {
