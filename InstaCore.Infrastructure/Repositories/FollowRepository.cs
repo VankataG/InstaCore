@@ -53,7 +53,6 @@ namespace InstaCore.Infrastructure.Repositories
         {
             Follow? follow = await dbContext
                                   .Follows
-                                  .AsNoTracking()
                                   .FirstOrDefaultAsync(f => f.FollowerId == followerId &&
                                                        f.FolloweeId == followeeId);
 
