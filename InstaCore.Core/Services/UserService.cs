@@ -11,12 +11,15 @@ namespace InstaCore.Core.Services
     {
         private readonly IUserRepository userRepository;
 
-        public UserService(IUserRepository userRepository)
+        private readonly IFollowRepository followRepository;
+
+        public UserService(IUserRepository userRepository, IFollowRepository followRepository)
         {
             this.userRepository = userRepository;
+            this.followRepository = followRepository;
         }
 
-
+        
         public async Task<UserResponse> GetByUsernameAsync(string username)
         {
             User? user = await userRepository.GetByUsernameAsync(username);
@@ -41,6 +44,8 @@ namespace InstaCore.Core.Services
             return UserMapper.ToResponse(myProfile);
         }
 
+        
+
         public async Task<UserResponse> UpdateProfileAsync(Guid userId, UpdateProfileRequest request)
         {
             User? myProfile = await userRepository.GetByIdAsync(userId);
@@ -57,5 +62,43 @@ namespace InstaCore.Core.Services
 
             return UserMapper.ToResponse(myProfile);
         }
+
+        public async Task FollowAsync(Guid followerId, string followeeUsername)
+        {
+            User? followeeUser = await userRepository.GetByUsernameAsync(followeeUsername);
+
+            if (followeeUser == null)
+                throw new NotFoundException("User not found.");
+
+            if (followeeUser.Id == followerId)
+                throw new BadRequestException("You cannot follow yourself.");
+
+            if (!await followRepository.ExistsAsync(followerId, followeeUser.Id))
+            {
+                Follow newFollow = new Follow()
+                {
+                    FollowerId = followerId,
+                    FolloweeId = followeeUser.Id
+                };
+
+                await followRepository.AddAsync(newFollow);
+            }
+        }
+
+        public async Task UnfollowAsync(Guid followerId, string followeeUsername)
+        {
+            User? followeeUser = await userRepository.GetByUsernameAsync(followeeUsername);
+
+            if (followeeUser == null)
+                throw new NotFoundException("User not found.");
+
+            if (!await followRepository.ExistsAsync(followerId, followeeUser.Id))
+                throw new NotFoundException("You do not follow this user.");
+
+            await followRepository.RemoveAsync(followerId, followeeUser.Id);
+        }
+
+
+        
     }
 }
