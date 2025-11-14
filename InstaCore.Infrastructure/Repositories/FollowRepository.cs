@@ -51,13 +51,14 @@ namespace InstaCore.Infrastructure.Repositories
 
         public async Task RemoveAsync(Guid followerId, Guid followeeId)
         {
-            if (await this.ExistsAsync(followerId, followeeId)){
-                Follow follow = await dbContext
-                                      .Follows
-                                      .AsNoTracking()
-                                      .FirstAsync(f => f.FollowerId == followerId &&
+            Follow? follow = await dbContext
+                                  .Follows
+                                  .AsNoTracking()
+                                  .FirstOrDefaultAsync(f => f.FollowerId == followerId &&
                                                        f.FolloweeId == followeeId);
 
+            if (follow != null)
+            {
                 dbContext.Follows.Remove(follow);
                 await dbContext.SaveChangesAsync();
             }
