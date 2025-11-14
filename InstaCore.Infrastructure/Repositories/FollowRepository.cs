@@ -1,33 +1,65 @@
 ﻿using InstaCore.Core.Contracts;
 using InstaCore.Core.Models;
+using InstaCore.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace InstaCore.Infrastructure.Repositories
 {
     public class FollowRepository : IFollowRepository
     {
-        public Task AddAsync(Follow follow)
+
+        private readonly InstaCoreDbContext dbContext;
+
+        private readonly IUserRepository userRepository;
+
+        public FollowRepository(InstaCoreDbContext dbContext, IUserRepository userRepository)
         {
-            throw new NotImplementedException();
+            this.dbContext = dbContext;
+            this.userRepository = userRepository;
         }
 
-        public Task<int> CountFollowerAsync(Guid userId)
+
+        public async Task AddAsync(Follow follow)
         {
-            throw new NotImplementedException();
+            dbContext.Follows.Add(follow);
+            await dbContext.SaveChangesAsync();
         }
 
-        public Task<int> CountFollowingAsync(Guid userId)
+        public async Task<int> CountFollowerAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            User? user = await userRepository.GetByIdAsync(userId);
+
+            return user.Followers.Count;
         }
 
-        public Task<bool> ExistsAsync(Guid followerId, Guid followeeId)
+        public async Task<int> CountFollowingAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            User? user = await userRepository.GetByIdAsync(userId);
+
+            return user.Following.Count;
         }
 
-        public Task RemoveAsync(Guid followerId, Guid followeeId)
+        public async Task<bool> ExistsAsync(Guid followerId, Guid followeeId)
         {
-            throw new NotImplementedException();
+            return await dbContext
+                        .Follows
+                        .AsNoTracking()
+                        .AnyAsync(f => f.FollowerId == followerId &&
+                                       f.FolloweeId == followeeId);
+        }
+
+        public async Task RemoveAsync(Guid followerId, Guid followeeId)
+        {
+            if (await this.ExistsAsync(followerId, followeeId)){
+                Follow follow = await dbContext
+                                      .Follows
+                                      .AsNoTracking()
+                                      .FirstAsync(f => f.FollowerId == followerId &&
+                                                       f.FolloweeId == followeeId);
+
+                dbContext.Follows.Remove(follow);
+                await dbContext.SaveChangesAsync();
+            }
         }
     }
 }
