@@ -13,6 +13,7 @@ using InstaCore.Data;
 using InstaCore.Infrastructure.Security;
 using InstaCore.Core.Services.Contracts;
 using System.IdentityModel.Tokens.Jwt;
+using InstaCore.Infrastructure.Repositories;
 
 
 
@@ -38,6 +39,7 @@ namespace InstaCore.Api
             // Add services to the container.
             builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IFollowRepository, FollowRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserService, UserService>();
 
