@@ -27,16 +27,20 @@ namespace InstaCore.Infrastructure.Repositories
 
         public async Task<int> CountFollowerAsync(Guid userId)
         {
-            User? user = await userRepository.GetByIdAsync(userId);
-
-            return user.Followers.Count;
+            return await dbContext
+                .Follows
+                .AsNoTracking()
+                .Where(f => f.FolloweeId == userId)
+                .CountAsync();
         }
 
         public async Task<int> CountFollowingAsync(Guid userId)
         {
-            User? user = await userRepository.GetByIdAsync(userId);
-
-            return user.Following.Count;
+            return await dbContext
+                .Follows
+                .AsNoTracking()
+                .Where(f => f.FollowerId == userId)
+                .CountAsync();
         }
 
         public async Task<bool> ExistsAsync(Guid followerId, Guid followeeId)
