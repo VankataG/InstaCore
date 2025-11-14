@@ -9,5 +9,9 @@ namespace InstaCore.Core.Services.Contracts
         Task<UserResponse> GetMeAsync(Guid userId);
 
         Task<UserResponse> UpdateProfileAsync(Guid userId, UpdateProfileRequest request);
+
+        Task FollowAsync(Guid followerId, string followeeUsername);
+
+        Task UnfollowAsync(Guid followerId, string followeeUsername);
     }
 }
