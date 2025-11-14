@@ -10,12 +10,9 @@ namespace InstaCore.Infrastructure.Repositories
 
         private readonly InstaCoreDbContext dbContext;
 
-        private readonly IUserRepository userRepository;
-
-        public FollowRepository(InstaCoreDbContext dbContext, IUserRepository userRepository)
+        public FollowRepository(InstaCoreDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.userRepository = userRepository;
         }
 
 
