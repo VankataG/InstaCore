@@ -8,7 +8,11 @@ namespace InstaCore.Core.Contracts
 
         Task<User?> GetByUsernameAsync(string username);
 
+        Task<User?> GetByUsernameWithFollowsAsync(string username);
+
         Task<User?> GetByIdAsync(Guid id);
+
+        Task<User?> GetByIdWithFollowsAsync(Guid id);
 
         Task<bool> ExistsByEmailAsync(string email);
 

@@ -48,6 +48,17 @@ namespace InstaCore.Core.Contracts
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
+        public async Task<User?> GetByIdWithFollowsAsync(Guid id)
+        {
+            return await
+                dbContext
+                .Users
+                .Include(u => u.Followers)
+                .Include(u => u.Following)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+
         public async Task<User?> GetByUsernameAsync(string username)
         {
             return await 
@@ -55,6 +66,17 @@ namespace InstaCore.Core.Contracts
                 .Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u =>u.Username == username.Trim());
+        }
+
+        public async Task<User?> GetByUsernameWithFollowsAsync(string username)
+        {
+            return await
+                dbContext
+                .Users
+                .Include(u => u.Followers)
+                .Include(u => u.Following)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Username == username.Trim());
         }
 
         public async Task UpdateAsync(User user)
