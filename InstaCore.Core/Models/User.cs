@@ -26,7 +26,5 @@
 
         public virtual ICollection<Follow> Following { get; set; } = new HashSet<Follow>();
 
-
-
     }
 }
