@@ -89,7 +89,10 @@ namespace InstaCore.Api.Controllers
 
             try
             {
-                await userService.FollowAsync(userId, username);
+                bool followed = await userService.FollowAsync(userId, username);
+
+                if (followed) return Created();
+
                 return NoContent();
             }
             catch (NotFoundException ex)
@@ -112,13 +115,14 @@ namespace InstaCore.Api.Controllers
 
             try
             {
-                await userService.UnfollowAsync(userId, username);
+                var unfollowed = await userService.UnfollowAsync(userId, username);
+                if (unfollowed) return Created();
+
                 return NoContent();
             }
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
-                throw;
             }
         }
     }
