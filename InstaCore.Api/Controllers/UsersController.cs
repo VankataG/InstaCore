@@ -77,5 +77,49 @@ namespace InstaCore.Api.Controllers
                 return NotFound(new { title = "Not found", detail = ex.Message });
             }
         }
+
+
+        [HttpPost("{username}/follow")]
+        public async Task<IActionResult> Follow(string username)
+        {
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (!Guid.TryParse(sub, out var userId))
+                return Unauthorized();
+
+            try
+            {
+                await userService.FollowAsync(userId, username);
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{username}/follow")]
+        public async Task<IActionResult> Unfollow(string username)
+        {
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (!Guid.TryParse(sub, out var userId))
+                return Unauthorized();
+
+            try
+            {
+                await userService.UnfollowAsync(userId, username);
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+                throw;
+            }
+        }
     }
 }
