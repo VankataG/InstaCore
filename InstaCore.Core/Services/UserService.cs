@@ -22,7 +22,7 @@ namespace InstaCore.Core.Services
         
         public async Task<UserResponse> GetByUsernameAsync(string username)
         {
-            User? user = await userRepository.GetByUsernameAsync(username);
+            User? user = await userRepository.GetByUsernameWithFollowsAsync(username);
 
             if (user == null)
             {
@@ -34,7 +34,7 @@ namespace InstaCore.Core.Services
 
         public async Task<UserResponse> GetMeAsync(Guid userId)
         {
-            User? myProfile = await userRepository.GetByIdAsync(userId);
+            User? myProfile = await userRepository.GetByIdWithFollowsAsync(userId);
 
             if (myProfile == null)
             {
@@ -65,7 +65,7 @@ namespace InstaCore.Core.Services
 
         public async Task FollowAsync(Guid followerId, string followeeUsername)
         {
-            User? followeeUser = await userRepository.GetByUsernameAsync(followeeUsername);
+            User? followeeUser = await userRepository.GetByUsernameWithFollowsAsync(followeeUsername);
 
             if (followeeUser == null)
                 throw new NotFoundException("User not found.");
@@ -87,7 +87,7 @@ namespace InstaCore.Core.Services
 
         public async Task UnfollowAsync(Guid followerId, string followeeUsername)
         {
-            User? followeeUser = await userRepository.GetByUsernameAsync(followeeUsername);
+            User? followeeUser = await userRepository.GetByUsernameWithFollowsAsync(followeeUsername);
 
             if (followeeUser == null)
                 throw new NotFoundException("User not found.");
