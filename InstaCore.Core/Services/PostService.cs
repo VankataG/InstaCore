@@ -24,7 +24,7 @@ namespace InstaCore.Core.Services
         public async Task<PostResponse> CreateAsync(Guid userId, CreatePostRequest request)
         {
             if (string.IsNullOrEmpty(request.Caption))
-                throw new ArgumentNullException("Caption cannot be empty.");
+                throw new NotFoundException("Caption cannot be empty.");
             
 
             User? user = await userRepository.GetByIdAsync(userId);
