@@ -14,6 +14,7 @@ using InstaCore.Infrastructure.Security;
 using InstaCore.Core.Services.Contracts;
 using System.IdentityModel.Tokens.Jwt;
 using InstaCore.Infrastructure.Repositories;
+using InstaCore.Core.Contracts.Repos;
 
 
 

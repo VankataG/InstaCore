@@ -1,4 +1,5 @@
 ﻿using InstaCore.Core.Contracts;
+using InstaCore.Core.Contracts.Repos;
 using InstaCore.Core.Dtos;
 using InstaCore.Core.Exceptions;
 using InstaCore.Core.Models;
