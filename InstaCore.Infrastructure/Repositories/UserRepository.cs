@@ -1,4 +1,5 @@
-﻿using InstaCore.Core.Models;
+﻿using InstaCore.Core.Contracts.Repos;
+using InstaCore.Core.Models;
 using InstaCore.Data;
 using Microsoft.EntityFrameworkCore;
 

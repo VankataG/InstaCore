@@ -1,4 +1,4 @@
-﻿using InstaCore.Core.Contracts;
+﻿using InstaCore.Core.Contracts.Repos;
 using InstaCore.Core.Models;
 using InstaCore.Data;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,7 @@ namespace InstaCore.Infrastructure.Repositories
 
         public async Task AddAsync(Follow follow)
         {
-            dbContext.Follows.Add(follow);
+            await dbContext.Follows.AddAsync(follow);
             await dbContext.SaveChangesAsync();
         }
 

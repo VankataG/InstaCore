@@ -1,6 +1,6 @@
 ﻿using InstaCore.Core.Models;
 
-namespace InstaCore.Core.Contracts
+namespace InstaCore.Core.Contracts.Repos
 {
     public interface IUserRepository
     {
