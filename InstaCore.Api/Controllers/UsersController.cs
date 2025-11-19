@@ -18,7 +18,7 @@ namespace InstaCore.Api.Controllers
         private readonly IUserService userService;
         public UsersController(IUserService userService)
         {
-            this.userService = userService;   
+            this.userService = userService;
         }
 
 
@@ -30,16 +30,10 @@ namespace InstaCore.Api.Controllers
             if (!Guid.TryParse(sub, out var userId))
                 return Unauthorized();
 
-            try
-            {
-                UserResponse response = await userService.GetMeAsync(userId);
 
-                return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new { title = "Not found", detail = ex.Message });
-            }
+            UserResponse response = await userService.GetMeAsync(userId);
+
+            return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
         }
 
 
@@ -47,15 +41,8 @@ namespace InstaCore.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetPublicProfile(string username)
         {
-            try
-            {
-                UserResponse response = await userService.GetByUsernameAsync(username);
-                return Ok(new { response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new { title = "Not found", detail = ex.Message });
-            }
+            UserResponse response = await userService.GetByUsernameAsync(username);
+            return Ok(new { response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
         }
 
         [HttpPut("me")]
@@ -66,16 +53,9 @@ namespace InstaCore.Api.Controllers
             if (!Guid.TryParse(sub, out var userId))
                 return Unauthorized();
 
-            try
-            {
-                UserResponse response = await userService.UpdateProfileAsync(userId, request);
+            UserResponse response = await userService.UpdateProfileAsync(userId, request);
 
-                return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new { title = "Not found", detail = ex.Message });
-            }
+            return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
         }
 
 
@@ -87,22 +67,11 @@ namespace InstaCore.Api.Controllers
             if (!Guid.TryParse(sub, out var userId))
                 return Unauthorized();
 
-            try
-            {
-                bool followed = await userService.FollowAsync(userId, username);
+            bool followed = await userService.FollowAsync(userId, username);
 
-                if (followed) return Created();
+            if (followed) return Created();
 
-                return NoContent();
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return NoContent();
         }
 
         [HttpDelete("{username}/follow")]
@@ -113,17 +82,11 @@ namespace InstaCore.Api.Controllers
             if (!Guid.TryParse(sub, out var userId))
                 return Unauthorized();
 
-            try
-            {
-                var unfollowed = await userService.UnfollowAsync(userId, username);
-                if (unfollowed) return Created();
 
-                return NoContent();
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var unfollowed = await userService.UnfollowAsync(userId, username);
+            if (unfollowed) return Created();
+
+            return NoContent();
         }
     }
 }

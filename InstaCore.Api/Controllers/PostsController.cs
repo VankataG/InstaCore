@@ -29,30 +29,16 @@ namespace InstaCore.Api.Controllers
             if (!Guid.TryParse(sub, out var userId))
                 return Unauthorized();
 
-            try
-            {
-                PostResponse response = await postService.CreateAsync(userId, request);
-                return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            PostResponse response = await postService.CreateAsync(userId, request);
+            return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
         {
-            try
-            {
-                PostResponse response = await postService.GetByIdAsync(id);
-                return Ok(response);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            PostResponse response = await postService.GetByIdAsync(id);
+            return Ok(response);
         }
     }
 }

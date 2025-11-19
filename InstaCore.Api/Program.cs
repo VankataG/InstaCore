@@ -15,6 +15,7 @@ using InstaCore.Core.Services.Contracts;
 using System.IdentityModel.Tokens.Jwt;
 using InstaCore.Infrastructure.Repositories;
 using InstaCore.Core.Contracts.Repos;
+using InstaCore.Api.Middlewares;
 
 
 
@@ -129,6 +130,8 @@ namespace InstaCore.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();
