@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using InstaCore.Infrastructure.Repositories;
 using InstaCore.Core.Contracts.Repos;
 using InstaCore.Api.Middlewares;
+using InstaCore.Api.Extensions;
 
 
 
@@ -82,39 +83,7 @@ namespace InstaCore.Api
 
             builder.Services.AddControllers();
 
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
-
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new() { Title = "InstaCore API", Version = "v1" });
-
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "Enter: {your JWT token}"
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-            });
+            builder.Services.AddCustomSwagger();
 
 
 
@@ -131,7 +100,7 @@ namespace InstaCore.Api
 
             app.UseHttpsRedirection();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseErrorHandling();
 
             app.UseAuthentication();
             app.UseAuthorization();
