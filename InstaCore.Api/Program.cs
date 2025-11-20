@@ -1,10 +1,10 @@
 using System.Text;
 using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 using InstaCore.Core;
 using InstaCore.Core.Contracts;
@@ -12,10 +12,9 @@ using InstaCore.Core.Services;
 using InstaCore.Data;
 using InstaCore.Infrastructure.Security;
 using InstaCore.Core.Services.Contracts;
-using System.IdentityModel.Tokens.Jwt;
+
 using InstaCore.Infrastructure.Repositories;
 using InstaCore.Core.Contracts.Repos;
-using InstaCore.Api.Middlewares;
 using InstaCore.Api.Extensions;
 
 
@@ -57,34 +56,13 @@ namespace InstaCore.Api
 
             JwtOptions jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
 
-            builder.Services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-                    options.MapInboundClaims = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidIssuer = jwt.Issuer,
-                        ValidAudience = jwt.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromSeconds(30),
+            builder.Services.AddJwtConfiguration(jwt);
 
-                        NameClaimType = JwtRegisteredClaimNames.Sub,
-                        RoleClaimType = ClaimTypes.Role
-                    };
-                });
 
             builder.Services.AddAuthorization();
-
             builder.Services.AddControllers();
 
             builder.Services.AddCustomSwagger();
-
 
 
             var app = builder.Build();
@@ -93,7 +71,6 @@ namespace InstaCore.Api
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
-
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
@@ -104,7 +81,6 @@ namespace InstaCore.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

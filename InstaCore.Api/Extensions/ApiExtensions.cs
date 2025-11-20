@@ -1,4 +1,10 @@
-﻿using InstaCore.Api.Middlewares;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using InstaCore.Api.Middlewares;
+using InstaCore.Core;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace InstaCore.Api.Extensions
@@ -11,6 +17,34 @@ namespace InstaCore.Api.Extensions
 
             return app;
         }
+
+        public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, JwtOptions jwt)
+        {
+            services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+                    options.MapInboundClaims = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = jwt.Issuer,
+                        ValidAudience = jwt.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromSeconds(30),
+
+                        NameClaimType = JwtRegisteredClaimNames.Sub,
+                        RoleClaimType = ClaimTypes.Role
+                    };
+                });
+
+            return services;
+        }
+
 
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {
