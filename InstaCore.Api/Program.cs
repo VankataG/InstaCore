@@ -40,22 +40,16 @@ namespace InstaCore.Api
 
             // Add services to the container.
             builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+            builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
+
+            builder.Services.AddUserDefinedServices(typeof(IAuthService).Assembly);
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IFollowRepository, FollowRepository>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
-
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IPostService, PostService>();
-
-
-            //Add and configure Jwt
+            
             builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
-            builder.Services.AddSingleton<IJwtTokenService,JwtTokenService>();
-
             JwtOptions jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
-
             builder.Services.AddJwtConfiguration(jwt);
 
 
