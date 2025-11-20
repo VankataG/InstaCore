@@ -1,5 +1,4 @@
 ﻿using InstaCore.Core.Exceptions;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace InstaCore.Api.Middlewares
 {
