@@ -1,9 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using InstaCore.Core.Dtos.Users;
-using InstaCore.Core.Exceptions;
-using InstaCore.Core.Models;
 using InstaCore.Core.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

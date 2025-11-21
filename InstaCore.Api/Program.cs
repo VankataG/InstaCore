@@ -1,20 +1,10 @@
-using System.Text;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 using InstaCore.Core;
 using InstaCore.Core.Contracts;
-using InstaCore.Core.Services;
 using InstaCore.Data;
 using InstaCore.Infrastructure.Security;
 using InstaCore.Core.Services.Contracts;
-
-using InstaCore.Infrastructure.Repositories;
-using InstaCore.Core.Contracts.Repos;
 using InstaCore.Api.Extensions;
 
 
@@ -43,10 +33,7 @@ namespace InstaCore.Api
             builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
             builder.Services.AddUserDefinedServices(typeof(IAuthService).Assembly);
-
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<IFollowRepository, FollowRepository>();
-            builder.Services.AddScoped<IPostRepository, PostRepository>();
+            builder.Services.AddRepositories(typeof(UserRepository).Assembly);
             
             builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
             JwtOptions jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
