@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using InstaCore.Api.Extensions;
 using InstaCore.Core.Dtos.Users;
 using InstaCore.Core.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -21,13 +22,11 @@ namespace InstaCore.Api.Controllers
         [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUser()
         {
-            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-
-            if (!Guid.TryParse(sub, out var userId))
+            var userId = this.GetUserId();
+            if (userId == null)
                 return Unauthorized();
 
-
-            UserResponse response = await userService.GetMeAsync(userId);
+            UserResponse response = await userService.GetMeAsync(userId.Value);
 
             return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
         }
@@ -44,12 +43,11 @@ namespace InstaCore.Api.Controllers
         [HttpPut("me")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
         {
-            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-
-            if (!Guid.TryParse(sub, out var userId))
+            var userId = this.GetUserId();
+            if (userId == null)
                 return Unauthorized();
 
-            UserResponse response = await userService.UpdateProfileAsync(userId, request);
+            UserResponse response = await userService.UpdateProfileAsync(userId.Value, request);
 
             return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
         }
@@ -58,12 +56,11 @@ namespace InstaCore.Api.Controllers
         [HttpPost("{username}/follow")]
         public async Task<IActionResult> Follow(string username)
         {
-            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-
-            if (!Guid.TryParse(sub, out var userId))
+            var userId = this.GetUserId();
+            if (userId == null)
                 return Unauthorized();
 
-            bool followed = await userService.FollowAsync(userId, username);
+            bool followed = await userService.FollowAsync(userId.Value, username);
 
             if (followed) return Created();
 
@@ -73,13 +70,11 @@ namespace InstaCore.Api.Controllers
         [HttpDelete("{username}/follow")]
         public async Task<IActionResult> Unfollow(string username)
         {
-            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-
-            if (!Guid.TryParse(sub, out var userId))
+            var userId = this.GetUserId();
+            if (userId == null)
                 return Unauthorized();
 
-
-            var unfollowed = await userService.UnfollowAsync(userId, username);
+            var unfollowed = await userService.UnfollowAsync(userId.Value, username);
             if (unfollowed) return Created();
 
             return NoContent();

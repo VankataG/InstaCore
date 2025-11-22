@@ -1,5 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-
+using InstaCore.Api.Extensions;
 using InstaCore.Core.Dtos.Posts;
 using InstaCore.Core.Services.Contracts;
 
@@ -24,12 +24,11 @@ namespace InstaCore.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePostRequest request)
         {
-            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-
-            if (!Guid.TryParse(sub, out var userId))
+            var userId = this.GetUserId();
+            if (userId == null)
                 return Unauthorized();
 
-            PostResponse response = await postService.CreateAsync(userId, request);
+            PostResponse response = await postService.CreateAsync(userId.Value, request);
             return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
 
