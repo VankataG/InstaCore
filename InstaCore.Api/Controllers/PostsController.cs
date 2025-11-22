@@ -1,8 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Principal;
+
+using InstaCore.Core.Dtos.Likes;
 using InstaCore.Core.Dtos.Posts;
-using InstaCore.Core.Exceptions;
 using InstaCore.Core.Services.Contracts;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,12 @@ namespace InstaCore.Api.Controllers
     {
         private readonly IPostService postService;
 
-        public PostsController(IPostService postService)
+        private readonly ILikeService likeService;
+
+        public PostsController(IPostService postService, ILikeService likeService)
         {
             this.postService = postService;
+            this.likeService = likeService;
         }
 
 
@@ -38,6 +42,32 @@ namespace InstaCore.Api.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             PostResponse response = await postService.GetByIdAsync(id);
+            return Ok(response);
+        }
+
+        [HttpPost("{postId}/like")]
+        public async Task<IActionResult> Like(Guid postId)
+        {
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (!Guid.TryParse(sub, out var userId))
+                return Unauthorized();
+
+            LikeResponse response = await likeService.LikeAsync(userId, postId);
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{postId}/like")]
+        public async Task<IActionResult> Unlike(Guid postId)
+        {
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (!Guid.TryParse(sub, out var userId))
+                return Unauthorized();
+
+            LikeResponse response = await likeService.UnlikeAsync(userId, postId);
+
             return Ok(response);
         }
     }
