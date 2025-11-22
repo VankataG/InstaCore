@@ -34,5 +34,10 @@ namespace InstaCore.Infrastructure.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(l => l.UserId == userId && l.PostId == postId);
         }
+
+        public async Task<int> GetTotalLikesCountAsync(Guid postId)
+        {
+            return await dbContext.Likes.CountAsync(l => l.PostId == postId);
+        }
     }
 }

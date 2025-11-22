@@ -9,5 +9,7 @@ namespace InstaCore.Core.Contracts.Repos
         public Task DeleteAsync(Like like);
 
         public Task<Like?> GetByUserAndPostAsync(Guid userId, Guid postId);
+
+        public Task<int> GetTotalLikesCountAsync(Guid postId);
     }
 }
