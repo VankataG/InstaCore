@@ -50,7 +50,7 @@ namespace InstaCore.Core.Services
                 PostId = postId,
                 Username = user.Username,
                 Liked = true,
-                TotalLikes = post.Likes.Count + 1,
+                TotalLikes = await likeRepository.GetTotalLikesCountAsync(postId),
                 CreatedAt = newLike.CreatedAt
             };
         }
@@ -77,7 +77,7 @@ namespace InstaCore.Core.Services
                 PostId = postId,
                 Username = user.Username,
                 Liked = false,
-                TotalLikes = post.Likes.Count - 1
+                TotalLikes = await likeRepository.GetTotalLikesCountAsync(postId)
             };
         }
     }
