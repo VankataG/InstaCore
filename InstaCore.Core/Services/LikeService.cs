@@ -50,7 +50,7 @@ namespace InstaCore.Core.Services
                 PostId = postId,
                 Username = user.Username,
                 Liked = true,
-                TotalLikes = post.Likes.Count,
+                TotalLikes = post.Likes.Count + 1,
                 CreatedAt = newLike.CreatedAt
             };
         }

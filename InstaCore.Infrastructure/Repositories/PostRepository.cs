@@ -26,6 +26,7 @@ namespace InstaCore.Infrastructure.Repositories
             return await dbContext
                 .Posts
                 .Include(p => p.User)
+                .Include(p => p.Likes)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
