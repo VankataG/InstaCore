@@ -25,17 +25,14 @@ namespace InstaCore.Core.Services
         public async Task<LikeResponse> LikeAsync(Guid userId, Guid postId)
         {
             Post? post = await postRepository.GetByIdAsync(postId);
-
             if(post == null) 
                 throw new NotFoundException("Post not found.");
 
             User? user = await userRepository.GetByIdAsync(userId);
-
             if (user == null)
                 throw new NotFoundException("User not found.");
 
             Like? existingLike = await likeRepository.GetByUserAndPostAsync(userId, postId);
-
             if (existingLike != null)
                 throw new ConflictException("You already liked this post.");
 
@@ -61,17 +58,14 @@ namespace InstaCore.Core.Services
         public async Task<LikeResponse> UnlikeAsync(Guid userId, Guid postId)
         {
             Post? post = await postRepository.GetByIdAsync(postId);
-
             if (post == null)
                 throw new NotFoundException("Post not found.");
 
             User? user = await userRepository.GetByIdAsync(userId);
-
             if (user == null)
                 throw new NotFoundException("User not found.");
 
             Like? like = await likeRepository.GetByUserAndPostAsync(userId, postId);
-
             if (like == null)
                 throw new ConflictException("You haven't liked this post.");
 
