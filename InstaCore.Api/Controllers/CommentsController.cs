@@ -8,7 +8,7 @@ namespace InstaCore.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]/{postId}/comments")]
+    [Route("api/comments/{postId}/comments")]
     public class CommentsController : ControllerBase
     {
         private readonly ICommentService commentService;

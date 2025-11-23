@@ -10,7 +10,7 @@ namespace InstaCore.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/likes")]
     public class LikesController : ControllerBase
     {
         private readonly ILikeService likeService;
