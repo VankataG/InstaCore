@@ -38,4 +38,4 @@ The goal of the project is to focus on clean architecture, global error handling
 ### ✅ Posts
 - Create a post (caption + optional image URL)
 - Fetch post by ID
-- (Coming soon) User posts, feed, comments, likes
+- User posts, feed, comments, likes
