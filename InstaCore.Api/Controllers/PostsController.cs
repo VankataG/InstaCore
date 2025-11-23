@@ -10,7 +10,7 @@ namespace InstaCore.Api.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/posts")]
     public class PostsController : ControllerBase
     {
         private readonly IPostService postService;
@@ -32,11 +32,11 @@ namespace InstaCore.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
 
-        [HttpGet]
+        [HttpGet("{postId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid postId)
         {
-            PostResponse response = await postService.GetByIdAsync(id);
+            PostResponse response = await postService.GetByIdAsync(postId);
             return Ok(response);
         }
 

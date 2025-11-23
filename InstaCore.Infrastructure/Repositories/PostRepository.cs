@@ -27,6 +27,7 @@ namespace InstaCore.Infrastructure.Repositories
                 .Posts
                 .Include(p => p.User)
                 .Include(p => p.Likes)
+                .Include(p => p.Comments)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }

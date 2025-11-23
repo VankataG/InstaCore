@@ -11,6 +11,8 @@ namespace InstaCore.Core.Mapping
             Username = user.Username,
             Caption = post.Caption,
             ImageUrl = post.ImageUrl,
+            Likes = post.Likes.Count,
+            Comments = post.Comments.Count,
             CreatedAt = post.CreatedAt
         };
     }
