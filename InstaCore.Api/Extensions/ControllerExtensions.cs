@@ -9,7 +9,7 @@ namespace InstaCore.Api.Extensions
         {
             var sub = controller.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
-            if (!Guid.TryParse(sub, out var userId))
+            if (Guid.TryParse(sub, out var userId))
                 return userId;
 
             return null;
