@@ -14,5 +14,7 @@ namespace InstaCore.Core.Contracts.Repos
 
         Task<int> CountFollowingAsync(Guid userId);
 
+        Task<IReadOnlyList<Guid>> GetFolloweeIdsAsync(Guid followerId);
+
     }
 }

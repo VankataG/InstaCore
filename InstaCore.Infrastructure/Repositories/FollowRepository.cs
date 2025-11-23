@@ -49,6 +49,7 @@ namespace InstaCore.Infrastructure.Repositories
                                        f.FolloweeId == followeeId);
         }
 
+
         public async Task RemoveAsync(Guid followerId, Guid followeeId)
         {
             Follow? follow = await dbContext
@@ -61,6 +62,15 @@ namespace InstaCore.Infrastructure.Repositories
                 dbContext.Follows.Remove(follow);
                 await dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<IReadOnlyList<Guid>> GetFolloweeIdsAsync(Guid followerId)
+        {
+            return await dbContext
+                .Follows
+                .Where(f => f.FollowerId.Equals(followerId))
+                .Select(f => f.FolloweeId)
+                .ToListAsync();
         }
     }
 }

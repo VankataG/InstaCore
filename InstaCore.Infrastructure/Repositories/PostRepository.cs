@@ -2,6 +2,7 @@
 using InstaCore.Core.Models;
 using InstaCore.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace InstaCore.Infrastructure.Repositories
 {
@@ -40,6 +41,24 @@ namespace InstaCore.Infrastructure.Repositories
                 .Include(p => p.Comments)
                 .Where(p => p.UserId == userId)
                 .OrderByDescending(p => p.CreatedAt)
+                .Skip(skip)
+                .Take(take)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Post>> GetFeedAsync(IReadOnlyList<Guid> authorIds, int skip, int take)
+        {
+            if (authorIds.Count == 0)
+                return new List<Post>().AsReadOnly();
+
+            return await dbContext
+                .Posts
+                .Where(p => authorIds.Contains(p.UserId))
+                .Include(p => p.User)
+                .Include(p => p.Likes)
+                .Include(p => p.Comments)
+                .OrderByDescending (p => p.CreatedAt)
                 .Skip(skip)
                 .Take(take)
                 .AsNoTracking()
