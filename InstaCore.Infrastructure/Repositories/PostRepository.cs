@@ -32,9 +32,18 @@ namespace InstaCore.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<IReadOnlyList<Post>> GetByUserAsync(Guid userId, int skip, int take)
+        public async Task<IReadOnlyList<Post>> GetByUserAsync(Guid userId, int skip, int take)
         {
-            throw new NotImplementedException();
+            return await dbContext
+                .Posts
+                .Include(p => p.Likes)
+                .Include(p => p.Comments)
+                .Where(p => p.UserId == userId)
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip(skip)
+                .Take(take)
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

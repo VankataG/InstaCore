@@ -1,4 +1,5 @@
-﻿using InstaCore.Core.Contracts.Repos;
+﻿using System.Numerics;
+using InstaCore.Core.Contracts.Repos;
 using InstaCore.Core.Dtos.Posts;
 using InstaCore.Core.Exceptions;
 using InstaCore.Core.Mapping;
@@ -55,9 +56,31 @@ namespace InstaCore.Core.Services
             return PostMapper.ToResponse(post, user);
         }
 
-        public async Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int skip, int take)
+        public async Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            if (page < 1)
+                throw new BadRequestException("Page must me at least 1.");
+
+            if (pageSize <= 0 || pageSize > 50)
+                throw new BadRequestException("PageSize must be between 1 and 50.");
+
+            User? user = await userRepository.GetByUsernameAsync(username);
+            if (user is null)
+                throw new NotFoundException("User not found.");
+
+            int skip = (page - 1) * pageSize;
+            int take = pageSize;
+
+            IReadOnlyList<Post> posts = await postRepository.GetByUserAsync(user.Id, skip, take);
+
+            List<PostResponse> responseList = new List<PostResponse>();
+
+            foreach(Post post in posts)
+            {
+                responseList.Add(PostMapper.ToResponse(post, user));
+            }
+
+            return responseList;
         }
     }
 }

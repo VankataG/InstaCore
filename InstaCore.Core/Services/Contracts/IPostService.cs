@@ -8,6 +8,6 @@ namespace InstaCore.Core.Services.Contracts
 
         Task<PostResponse> GetByIdAsync(Guid postId);
 
-        Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int skip, int take);
+        Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int page, int pageSize);
     }
 }

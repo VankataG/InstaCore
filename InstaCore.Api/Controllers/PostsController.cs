@@ -40,5 +40,12 @@ namespace InstaCore.Api.Controllers
             return Ok(response);
         }
 
+        [HttpGet("user/{username}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUserPosts([FromRoute]string username, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            var posts = await postService.GetByUserAsync(username, page, pageSize);
+            return Ok(posts);
+        }
     }
 }
