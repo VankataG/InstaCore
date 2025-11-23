@@ -59,7 +59,7 @@ namespace InstaCore.Core.Services
         public async Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int page, int pageSize)
         {
             if (page < 1)
-                throw new BadRequestException("Page must me at least 1.");
+                throw new BadRequestException("Page must be at least 1.");
 
             if (pageSize <= 0 || pageSize > 50)
                 throw new BadRequestException("PageSize must be between 1 and 50.");
@@ -73,14 +73,7 @@ namespace InstaCore.Core.Services
 
             IReadOnlyList<Post> posts = await postRepository.GetByUserAsync(user.Id, skip, take);
 
-            List<PostResponse> responseList = new List<PostResponse>();
-
-            foreach(Post post in posts)
-            {
-                responseList.Add(PostMapper.ToResponse(post, user));
-            }
-
-            return responseList;
+            return posts.Select(p => PostMapper.ToResponse(p, user)).ToList().AsReadOnly();
         }
     }
 }
