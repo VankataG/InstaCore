@@ -29,7 +29,7 @@ namespace InstaCore.Api.Controllers
                 return Unauthorized();
 
             PostResponse response = await postService.CreateAsync(userId.Value, request);
-            return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+            return CreatedAtAction(nameof(GetById), new { postId = response.Id }, response);
         }
 
         [HttpGet("{postId}")]
