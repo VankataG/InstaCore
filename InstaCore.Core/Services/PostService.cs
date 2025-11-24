@@ -109,7 +109,7 @@ namespace InstaCore.Core.Services
 
             IReadOnlyList<Post> feed = await postRepository.GetFeedAsync(authorIds, skip, take);
 
-            return feed.Select(p => PostMapper.ToResponse(p, user)).ToList().AsReadOnly();
+            return feed.Select(p => PostMapper.ToResponse(p, p.User)).ToList().AsReadOnly();
         }
 
         private void CheckPageAndPageSize(int page, int pageSize)
