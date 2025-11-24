@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using InstaCore.Api.Extensions;
+﻿using InstaCore.Api.Extensions;
 using InstaCore.Core.Dtos.Posts;
 using InstaCore.Core.Services.Contracts;
 
@@ -22,7 +21,7 @@ namespace InstaCore.Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreatePostRequest request)
+        public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
         {
             var userId = this.GetUserId();
             if (userId == null)
@@ -46,6 +45,17 @@ namespace InstaCore.Api.Controllers
         {
             var posts = await postService.GetByUserAsync(username, page, pageSize);
             return Ok(posts);
+        }
+
+        [HttpDelete("{postId}")]
+        public async Task<IActionResult> DeletePost(Guid postId)
+        {
+            var userId = this.GetUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            await postService.DeletePostAsync(userId.Value, postId);
+            return Ok();
         }
     }
 }

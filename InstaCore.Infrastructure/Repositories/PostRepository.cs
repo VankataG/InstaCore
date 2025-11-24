@@ -22,6 +22,12 @@ namespace InstaCore.Infrastructure.Repositories
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(Post post)
+        {
+            dbContext.Posts.Remove(post);
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<Post?> GetByIdAsync(Guid id)
         {
             return await dbContext

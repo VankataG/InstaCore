@@ -6,6 +6,8 @@ namespace InstaCore.Core.Contracts.Repos
     {
         Task AddAsync(Post post);
 
+        Task DeleteAsync(Post post);
+
         Task<Post?> GetByIdAsync(Guid id);
 
         Task<IReadOnlyList<Post>> GetByUserAsync(Guid userId, int skip, int take);

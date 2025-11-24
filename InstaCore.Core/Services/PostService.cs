@@ -1,4 +1,5 @@
-﻿using InstaCore.Core.Contracts.Repos;
+﻿using System.ComponentModel.Design;
+using InstaCore.Core.Contracts.Repos;
 using InstaCore.Core.Dtos.Posts;
 using InstaCore.Core.Exceptions;
 using InstaCore.Core.Mapping;
@@ -45,6 +46,19 @@ namespace InstaCore.Core.Services
             await postRepository.AddAsync(newPost);
 
             return PostMapper.ToResponse(newPost, user);
+        }
+
+        public async Task DeletePostAsync(Guid userId, Guid postId)
+        {
+            Post? post = await postRepository.GetByIdAsync(postId);
+
+            if (post == null)
+                throw new NotFoundException("Post not found.");
+
+            if (post.UserId != userId)
+                throw new UnauthorizedException("You are not authorized to delete this post.");
+
+            await postRepository.DeleteAsync(post);
         }
 
         public async Task<PostResponse> GetByIdAsync(Guid postId)

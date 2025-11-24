@@ -11,5 +11,7 @@ namespace InstaCore.Core.Services.Contracts
         Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int page, int pageSize);
 
         Task<IReadOnlyList<PostResponse>> GetFeedAsync(Guid userId, int page, int pageSize);
+
+        Task DeletePostAsync(Guid userId, Guid postId);
     }
 }
