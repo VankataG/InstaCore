@@ -15,7 +15,19 @@ namespace InstaCore.Api
     {
         public static void Main(string[] args)
         {
+            var corsPolicy = "React_Frontend";
+
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(corsPolicy, policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
 
             var connectionString = 
                 builder.Configuration.GetConnectionString("InstaCore") ?? 
@@ -57,6 +69,8 @@ namespace InstaCore.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(corsPolicy);
 
             app.UseErrorHandling();
 
