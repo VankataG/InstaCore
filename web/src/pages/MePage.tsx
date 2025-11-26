@@ -25,7 +25,7 @@ export default function MePage() {
                 const me = await getMe(token);
                 setProfile(me);
             } catch (err: any) {
-
+                setError(err.message ?? "Failed to load /me.");
             } finally {
                 setLoading(false);
             }            
@@ -67,7 +67,7 @@ export default function MePage() {
           <p><strong>Username:</strong> {profile.username}</p>
           <p><strong>Bio:</strong> {profile.bio ?? "(no bio yet)"}</p>
           <p><strong>Avatar:</strong> {profile.avatarUrl ?? "(no avatar yet)"}</p>
-        
+
           <button onClick={handleLogout} style={{ marginTop: "1rem" }}>
             Logout
           </button>
