@@ -11,7 +11,7 @@
     id: string;
     username: string;
     bio: string | null;
-    avatarUlr: string | null;
+    avatarUrl: string | null;
  };
 
  export async function getPublicProfile(username:string): Promise<PublicUserResponse> {
