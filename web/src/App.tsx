@@ -2,7 +2,7 @@
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import MePage from "./pages/MePage";
-//import PublicProfilePage from "./pages/PublicProfilePage";
+import PublicProfilePage from "./pages/PublicProfilePage";
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/me" element={<MePage />} />
-          {/* <Route path="/u/:username" element={<PublicProfilePage />} /> */}
+          <Route path="/u/:username" element={<PublicProfilePage />} />
           {/* later: feed, post details, etc. */}
         </Routes>
       </main>

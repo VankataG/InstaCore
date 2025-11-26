@@ -4,7 +4,7 @@
  export type PublicUserResponse = {
     username: string;
     bio: string | null;
-    avatarUlr: string | null;
+    avatarUrl: string | null;
  };
 
  export type MeResponse = {
