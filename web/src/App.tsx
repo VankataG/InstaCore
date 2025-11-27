@@ -3,6 +3,7 @@ import { Routes, Route, Link, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import MePage from "./pages/MePage";
 import PublicProfilePage from "./pages/PublicProfilePage";
+import FeedPage from "./pages/FeedPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <nav style={{ display: "flex", gap: "1rem" }}>
           <Link to="/login">Login</Link>
           <Link to="/me">My Profile</Link>
+          <Link to="/feed">Feed</Link>
         </nav>
       </header>
 
@@ -34,6 +36,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/me" element={<MePage />} />
           <Route path="/u/:username" element={<PublicProfilePage />} />
+          <Route path="/feed" element={<FeedPage />} />
           {/* later: feed, post details, etc. */}
         </Routes>
       </main>
