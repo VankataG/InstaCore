@@ -33,7 +33,7 @@ export default function FeedPage() {
         }
 
         loadFeed();
-    }, []);
+    }, [page]);
 
     if (loading) {
         return <div style={{ padding: "2rem"}}>Loading your profile...</div>;
@@ -63,6 +63,10 @@ export default function FeedPage() {
                     <p>{post.createdAt}</p>
                 </div>
             ))}
+            <div style={{ display: "flex", gap: "10px" }}>
+                <button onClick={() => setPage( page - 1)} disabled={page <= 1}>Previous</button>
+                <button onClick={() => setPage( page + 1)}>Next</button>
+            </div>
         </>
     );
 }
