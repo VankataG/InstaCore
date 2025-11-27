@@ -6,7 +6,7 @@ import { getFeed, type PostResponse } from "../api/posts";
 export default function FeedPage() {
 
     const [posts, setPosts] = useState< PostResponse[] | null>(null);
-    const [error, setError] = useState< String | null>(null);
+    const [error, setError] = useState< string | null>(null);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState<number>(1);
 
@@ -47,14 +47,14 @@ export default function FeedPage() {
         );
     }
 
-    if (!posts) {
+    if (posts?.length === 0) {
         return <div style={{ padding: "2rem"}}>No posts in your feed yet.</div>;
     }
 
     return (
         <>
-            {posts.map(post => (
-                <div style={{ padding: "2rem"}}>
+            {posts?.map(post => (
+                <div key={post.id} style={{ padding: "2rem"}}>
                     <p><strong>Username:</strong> {post.username}</p>
                     <p>{post.caption}</p>
                     <p>{post.imageUrl}</p>

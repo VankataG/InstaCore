@@ -11,7 +11,7 @@ export type PostResponse = {
     totalComments: number;
  };
 
- export async function getFeed(page:number, pageSize:number) {
+ export async function getFeed(page:number, pageSize:number): Promise<PostResponse[]> {
     const token = localStorage.getItem("token");
     
     const response = await fetch(`${API_BASE_URL}/api/feed?page=${page}&pageSize=${pageSize}`, {
@@ -30,7 +30,7 @@ export type PostResponse = {
     return response.json();
  }
 
- export async function getPostById(id: string) {
+ export async function getPostById(id: string): Promise<PostResponse> {
     const response = await fetch(`${API_BASE_URL}/api/posts/${id}`);
 
     if (!response.ok){
@@ -42,19 +42,19 @@ export type PostResponse = {
     return response.json();
  }
 
- export async function getUserPosts(username: string, page: number, pageSize: number) {
+ export async function getUserPosts(username: string, page: number, pageSize: number): Promise<PostResponse[]> {
     const response = await fetch(`${API_BASE_URL}/api/posts/user/${username}?page=${page}&pageSize=${pageSize}`);
 
     if (!response.ok){
         const body = await response.json().catch(() => null);
-        const message = body?.detail || body.title || `Request failed: ${response.status}`;
+        const message = body?.detail || body?.title || `Request failed: ${response.status}`;
         throw new Error(message);
     }
 
     return response.json();
  }
 
- export async function createPost(caption: string, imageUrl: string | null) {
+ export async function createPost(caption: string, imageUrl: string | null): Promise<PostResponse> {
     const token = localStorage.getItem("token");
 
     const response = await fetch(`${API_BASE_URL}/api/posts`, {
@@ -68,7 +68,7 @@ export type PostResponse = {
 
     if (!response.ok){
         const body = await response.json().catch(() => null);
-        const message = body?.detail || body.title || `Request failed: ${response.status}`;
+        const message = body?.detail || body?.title || `Request failed: ${response.status}`;
         throw new Error(message);
     }
 

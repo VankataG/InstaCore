@@ -48,7 +48,7 @@ export default function PublicProfilePage() {
     if (!profile) {
         return (
             <div style={{ padding: "2rem"}}>
-                No profile matches the {username}.
+                No profile matches the username: {username}.
             </div>
         );
     }
