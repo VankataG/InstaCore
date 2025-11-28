@@ -58,8 +58,8 @@ export default function FeedPage() {
                     <p><strong>Username:</strong> {post.username}</p>
                     <p>{post.caption}</p>
                     <p>{post.imageUrl}</p>
-                    <p>{post.totalLikes}</p>
-                    <p>{post.totalComments}</p>
+                    <p>Likes: {post.totalLikes}</p>
+                    <p>Comments: {post.totalComments}</p>
                     <p>{post.createdAt}</p>
                 </div>
             ))}
