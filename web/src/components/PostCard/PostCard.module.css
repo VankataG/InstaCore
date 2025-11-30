@@ -1,0 +1,37 @@
+.card {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #535151;
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.content {
+  padding: 0.75rem 0.9rem 0.9rem;
+}
+
+.caption {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* .date {
+}
+
+.stats {
+} */
