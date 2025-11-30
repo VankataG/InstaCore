@@ -1,9 +1,9 @@
 
 import { Routes, Route, Link, Navigate } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import MePage from "./pages/MePage";
-import PublicProfilePage from "./pages/PublicProfilePage";
-import FeedPage from "./pages/FeedPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import MePage from "./pages/MePage/MePage";
+import PublicProfilePage from "./pages/PublicProfilePage/PublicProfilePage";
+import FeedPage from "./pages/FeedPage/FeedPage";
 
 function App() {
   return (

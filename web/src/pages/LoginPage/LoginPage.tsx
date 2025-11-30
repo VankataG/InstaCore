@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { login } from "../api/auth"
-import { getMe } from "../api/users";
+import { login } from "../../api/auth"
+import { getMe } from "../../api/users";
 import { useNavigate } from "react-router-dom";
 
 

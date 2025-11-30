@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMe, type MeResponse } from "../api/users";
+import { getMe, type MeResponse } from "../../api/users";
 
 
 export default function MePage() {

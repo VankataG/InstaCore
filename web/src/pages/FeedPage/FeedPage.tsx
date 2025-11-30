@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getFeed, type PostResponse } from "../api/posts";
+import { getFeed, type PostResponse } from "../../api/posts";
 
 
 
