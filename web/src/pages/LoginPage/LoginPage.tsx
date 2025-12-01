@@ -3,6 +3,8 @@ import { login } from "../../api/auth"
 import { getMe } from "../../api/users";
 import { useNavigate } from "react-router-dom";
 
+import styles from "./LoginPage.module.css";
+
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -33,40 +35,53 @@ export default function LoginPage() {
     }
 
     return (
-        <div style={{ padding: "2rem" }}>
-            <h2>Login</h2>
+      <div className={styles.pageWrapper}>
+        <div className={styles.card}>
+          <div className={styles.logo}>InstaCore</div>
 
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: "1rem" }}>
-                    <input
-                        type="email"
-                        placeholder="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={{ padding: "0.5rem", minWidth: "250px" }}
-                    />
-                </div>
+          <h1 className={styles.title}>Welcome back</h1>
+          <p className={styles.subtitle}>Log in to continue to your account.</p>
 
-                <div style={{ marginBottom: "1rem" }}>
-                  <input
-                    type="password"
-                    placeholder="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={{ padding: "0.5rem", minWidth: "250px" }}
-                  />
-                </div>
+          {error && <div className={styles.errorBox}>{error}</div>}
 
-                <button type="submit" style={{ padding: "0.5rem 1rem" }}>
-                  Login
-                </button>
-            </form>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="email">
+                Email
+              </label>
+              <input
+                id="username"
+                type="text"
+                className={styles.input}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="username"
+              />
+            </div>
 
-            {error && (
-              <div style={{ marginTop: "1rem", color: "red" }}>
-                <strong>Error:</strong> {error}
-              </div>
-            )}
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="password">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                className={styles.input}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+              />
+            </div>
+
+            <button type="submit" className={styles.button}>Log in</button>
+          </form>
+
+          <p className={styles.footerText}>
+            Don&apos;t have an account yet?{" "}
+            <span className={styles.link}>Sign up (soon)</span>
+          </p>
         </div>
+      </div>
     );
+
 }
