@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+
 import { getFeed, type PostResponse } from "../../api/posts";
+import { PostCard } from "../../components/PostCard/PostCard";
 
 
 
 export default function FeedPage() {
 
-    const [posts, setPosts] = useState< PostResponse[] | null>(null);
+    const [posts, setPosts] = useState< PostResponse[]>([]);
     const [error, setError] = useState< string | null>(null);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState<number>(1);
@@ -53,16 +55,9 @@ export default function FeedPage() {
 
     return (
         <>
-            {posts?.map(post => (
-                <div key={post.id} style={{ padding: "2rem"}}>
-                    <p><strong>Username:</strong> {post.username}</p>
-                    <p>{post.caption}</p>
-                    <p>{post.imageUrl}</p>
-                    <p>Likes: {post.totalLikes}</p>
-                    <p>Comments: {post.totalComments}</p>
-                    <p>{post.createdAt}</p>
-                </div>
-            ))}
+            {posts.map((post) => (
+                          <PostCard key={(post as any).id} post={post} />
+                        ))}
             <div style={{ display: "flex", gap: "10px" }}>
                 <button onClick={() => setPage( page - 1)} disabled={page <= 1}>Previous</button>
                 <button onClick={() => setPage( page + 1)}>Next</button>

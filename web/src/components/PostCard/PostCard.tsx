@@ -7,13 +7,6 @@ type Props = {
 };
 
 export function PostCard({post}: Props){
-
-    //  caption: string;
-    // imageUrl: string | null;
-    // username: string;
-    // createdAt: string;
-    // totalLikes: number;
-    // totalComments
     const caption = (post as any).caption ?? "";
     const imageUrl = (post as any).imageUrl ?? null;
     const username = (post as any).username ?? "User not found";
