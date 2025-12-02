@@ -9,14 +9,16 @@ import styles from "./PublicProfilePage.module.css";
 
 export default function PublicProfilePage() {
     const { username } = useParams<{ username: string}>();
+    
     const [profile, setProfile] = useState<PublicUserResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
     const [userPosts, setUserPosts] = useState<PostResponse[]>([]);
-    const [page, setPage] = useState<number>(1);
     const [postsLoading, setPostsLoading] = useState<boolean>(true);
     const [postsError, setPostsError] = useState<string | null>(null);
+
+    const [page, setPage] = useState<number>(1);
 
     useEffect(() => {
         async function loadProfile() {
