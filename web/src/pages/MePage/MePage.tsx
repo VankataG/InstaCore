@@ -22,7 +22,6 @@ export default function MePage() {
     const [editing, setEditing] = useState<boolean>(false);
     const [editBio, setEditBio] = useState<string | null>(null);
     const [editAvatar, setEditAvatar] = useState<string | null>(null);
-    const [edited, setEdited] = useState<boolean>(false);
     const [editError, setEditError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -87,7 +86,6 @@ export default function MePage() {
             const request = { bio: editBio , avatarUrl: editAvatar};
             const response = await updateProfile(request, token);
             setProfile(response)
-            setEdited(true);
         } catch (err: any) {
             setEditError(err.message);
         } finally {
@@ -108,7 +106,6 @@ export default function MePage() {
     function cancelEdit(){
         setEditing(false);
         setEditError(null);
-        setEdited(false);
     }
 
     function handleLogout() {
