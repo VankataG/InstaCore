@@ -1,5 +1,4 @@
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "./client";
 
 export type PostResponse = {
     id: string;
@@ -13,64 +12,28 @@ export type PostResponse = {
 
  export async function getFeed(page:number, pageSize:number): Promise<PostResponse[]> {
     const token = localStorage.getItem("token");
-    
-    const response = await fetch(`${API_BASE_URL}/api/feed?page=${page}&pageSize=${pageSize}`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
+
+    return apiFetch<PostResponse[]>(`/api/feed?page=${page}&pageSize=${pageSize}`, {
+        method: "GET",
+        token,
     });
-
-    if (!response.ok){
-        const body = await response.json().catch(() => null);
-        const message = body?.detail || body?.title || `Request failed: ${response.status}`;
-        throw new Error(message);
-    }
-
-    return response.json();
  }
 
  export async function getPostById(id: string): Promise<PostResponse> {
-    const response = await fetch(`${API_BASE_URL}/api/posts/${id}`);
 
-    if (!response.ok){
-        const body = await response.json().catch(() => null);
-        const message = body?.detail || body.title || `Request failed: ${response.status}`;
-        throw new Error(message);
-    }
-
-    return response.json();
+    return apiFetch(`/api/posts/${id}`);
  }
 
  export async function getUserPosts(username: string, page: number, pageSize: number): Promise<PostResponse[]> {
-    const response = await fetch(`${API_BASE_URL}/api/posts/user/${username}?page=${page}&pageSize=${pageSize}`);
-
-    if (!response.ok){
-        const body = await response.json().catch(() => null);
-        const message = body?.detail || body?.title || `Request failed: ${response.status}`;
-        throw new Error(message);
-    }
-
-    return response.json();
+    return apiFetch(`/api/posts/user/${username}?page=${page}&pageSize=${pageSize}`);
  }
 
- export async function createPost(caption: string, imageUrl: string | null): Promise<PostResponse> {
-    const token = localStorage.getItem("token");
+//  export async function createPost(request: CreatePostRequest): Promise<PostResponse> {
+//     const token = localStorage.getItem("token");
 
-    const response = await fetch(`${API_BASE_URL}/api/posts`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ caption, imageUrl })
-    });
-
-    if (!response.ok){
-        const body = await response.json().catch(() => null);
-        const message = body?.detail || body?.title || `Request failed: ${response.status}`;
-        throw new Error(message);
-    }
-
-    return response.json();
- }
+//     return apiFetch(`/api/posts`, {
+//         method: "POST",
+//         token,
+//         body: request,
+//     })
+//  }

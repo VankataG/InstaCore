@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import MePage from "./pages/MePage/MePage";
 import PublicProfilePage from "./pages/PublicProfilePage/PublicProfilePage";
 import FeedPage from "./pages/FeedPage/FeedPage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
 
 function App() {
   return (
@@ -32,11 +33,12 @@ function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Navigate to="/register" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/me" element={<MePage />} />
           <Route path="/u/:username" element={<PublicProfilePage />} />
           <Route path="/feed" element={<FeedPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           {/* later: feed, post details, etc. */}
         </Routes>
       </main>
