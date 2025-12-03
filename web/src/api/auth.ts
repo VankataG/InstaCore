@@ -1,3 +1,5 @@
+import { apiFetch } from "./client";
+
  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
  export type LoginResponse = {
@@ -7,19 +9,8 @@
  };
 
  export async function login(email: string, password: string): Promise<LoginResponse> {
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    return apiFetch(`/api/auth/login`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password}),
+        body: { email, password},
     });
-
-    if (!response.ok) {
-        const body = await response.json().catch(() => null);
-        const message = body?.detail || body?.title || `Login failed ${response.status}`;
-        throw new Error(message);
-    }
-
-    return response.json();
  }
