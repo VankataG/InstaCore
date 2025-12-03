@@ -149,3 +149,69 @@
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1rem;
 }
+
+.editAvatarField {
+  margin-top: 0.75rem;
+}
+
+.label {
+  font-size: 0.85rem;
+  color: #d1d5db;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #4b5563;
+  background: #020617;
+  color: #f9fafb;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+.editBioField {
+  margin-top: 1rem;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #4b5563;
+  background: #020617;
+  color: #f9fafb;
+  font-size: 0.9rem;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+.bioPlaceholder {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.editActions {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buttonSecondary:disabled,
+.buttonGhost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

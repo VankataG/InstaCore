@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getMe, type MeResponse } from "../../api/users";
+import { getMe, updateProfile, type MeResponse } from "../../api/users";
 import { PostCard } from "../../components/PostCard/PostCard";
 import { getUserPosts, type PostResponse } from "../../api/posts";
 
@@ -18,6 +18,12 @@ export default function MePage() {
     const [postsLoading, setPostsLoading] = useState<boolean>(true);
     const [postsError, setPostsError] = useState<string | null>(null);
     const [page, setPage] = useState<number>(1);
+
+    const [editing, setEditing] = useState<boolean>(false);
+    const [editBio, setEditBio] = useState<string | null>(null);
+    const [editAvatar, setEditAvatar] = useState<string | null>(null);
+    const [edited, setEdited] = useState<boolean>(false);
+    const [editError, setEditError] = useState<string | null>(null);
 
     useEffect(() => {
         async function loadMe() {
@@ -54,7 +60,7 @@ export default function MePage() {
                     const response = await getUserPosts(profile.username, page, 6);
                     setUserPosts(response)
                 } catch (err: any) {
-                    setError(err.message || "Failed to load user posts.");
+                    setPostsError(err.message || "Failed to load user posts.");
                 } finally {
                     setPostsLoading(false);
                 }
@@ -63,6 +69,47 @@ export default function MePage() {
         }
         loadPosts();
     }, [profile, page]);
+
+    async function editProfile() {
+        if(!profile) return;
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setEditError("No token found. Please login first.");
+            setEditing(false);
+            return;
+        }
+
+        try{
+            setEditError(null);
+            setEditing(true);
+            
+            const request = { bio: editBio , avatarUrl: editAvatar};
+            const response = await updateProfile(request, token);
+            setProfile(response)
+            setEdited(true);
+        } catch (err: any) {
+            setEditError(err.message);
+        } finally {
+            setEditing(false);
+        }
+            
+    }
+
+    function startEdit(){
+        if (!profile) return;
+
+        setEditing(true);
+        setEditError(null);
+        setEditBio(profile.bio);
+        setEditAvatar(profile.avatarUrl);
+    }
+
+    function cancelEdit(){
+        setEditing(false);
+        setEditError(null);
+        setEdited(false);
+    }
 
     function handleLogout() {
         localStorage.removeItem("token");
@@ -110,6 +157,18 @@ export default function MePage() {
                     {profile.username[0]?.toUpperCase()}
                   </div>
                 )}
+
+                {editing && (
+                    <div className={styles.editAvatarField}>
+                        <label className={styles.label} htmlFor="avatarUrl">Avatar URL</label>
+                        <input id="avatarUrl" 
+                            type="text" 
+                            className={styles.input}
+                            value={editAvatar ?? ""}
+                            onChange={(e) => setEditAvatar(e.target.value)}
+                        />
+                    </div>
+                )}
               </div>
 
               <div className={styles.profileMain}>
@@ -120,9 +179,7 @@ export default function MePage() {
                     <button
                       type="button"
                       className={styles.buttonSecondary}
-                      onClick={() => {
-                        console.log("Edit profile clicked");
-                      }}
+                      onClick={startEdit}
                     >
                       Edit profile
                     </button>
@@ -164,8 +221,45 @@ export default function MePage() {
                   </span>
                 </div>
 
-                {"bio" in profile && (profile as any).bio && (
-                  <p className={styles.bio}>{(profile as any).bio}</p>
+                {!editing ? (
+                    profile.bio ? (
+                        <p className={styles.bio}>{profile.bio}</p>
+                    ) : (
+                        <p className={styles.bioPlaceholder}>You don't have a bio yet.</p>
+                    )
+                ) : (
+                    <div className={styles.editBioField}>
+                      <label className={styles.label} htmlFor="bio">
+                        Bio
+                      </label>
+                      <textarea
+                        id="bio"
+                        className={styles.textarea}
+                        rows={3}
+                        value={editBio ?? ""}
+                        onChange={(e) => setEditBio(e.target.value)}
+                        placeholder="Write something about yourself..."
+                      />
+
+                      {editError && <div className={styles.errorBox}>{editError}</div>}
+
+                      <div className={styles.editActions}>
+                        <button
+                          type="button"
+                          className={styles.buttonSecondary}
+                          onClick={editProfile}
+                        >
+                          Save
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.buttonGhost}
+                          onClick={cancelEdit}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
                 )}
               </div>
             </div>
@@ -208,7 +302,7 @@ export default function MePage() {
           </button>
           <span>Page {page}</span>
           <button
-            disabled={userPosts.length < page}
+            disabled={userPosts.length < 6}
             onClick={() => setPage((p) => p + 1)}
           >
             Next
