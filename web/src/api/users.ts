@@ -1,4 +1,4 @@
- const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "./client";
 
 
  export type PublicUserResponse = {
@@ -15,30 +15,25 @@
  };
 
  export async function getPublicProfile(username:string): Promise<PublicUserResponse> {
-    const response = await fetch(`${API_BASE_URL}/api/users/${username}`);
-
-    if (!response.ok) {
-        const body = await response.json().catch(() => null);
-        const message = body?.detail || body.title || `Request failed: ${response.status}`;
-        throw new Error(message);
-    }
-
-    return response.json();
+    return apiFetch<PublicUserResponse>(`/api/users/${username}`)
  }
 
  export async function getMe(token:string): Promise<MeResponse> {
-    const response = await fetch(`${API_BASE_URL}/api/users/me`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
+    return apiFetch<MeResponse>(`/api/users/me`, {
+        method: "GET",
+        token
     });
-    
-    if (!response.ok) {
-        const body = await response.json().catch(() => null);
-        const message = body?.detail || body?.title || `Request failed: ${response.status}`;
-        throw new Error(message);
-    }
+ }
 
-    return response.json();
+ export type UpdateProfileRequest= {
+    bio?: string | null;
+    avatarUrl?: string | null;
+ }
+
+ export async function updateProfile(request:UpdateProfileRequest, token:string): Promise<MeResponse> {
+    return apiFetch(`/api/users/me`, {
+        method: "PUT",
+        token,
+        body: request,
+    });
  }
