@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { getFeed, type PostResponse } from "../../api/posts";
 import { PostCard } from "../../components/PostCard/PostCard";
+import CreatePostForm from "../../components/CreatePostForm/CreatePostForm";
 
 
 
@@ -55,6 +56,12 @@ export default function FeedPage() {
 
     return (
         <>
+            <CreatePostForm 
+                onPostCreated={post => {
+                    setPosts( prev => [post, ...prev])
+                }}
+            />
+
             {posts.map((post) => (
                           <PostCard key={(post as any).id} post={post} />
                         ))}

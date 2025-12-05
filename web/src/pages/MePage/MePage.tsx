@@ -6,6 +6,7 @@ import { PostCard } from "../../components/PostCard/PostCard";
 import { getUserPosts, type PostResponse } from "../../api/posts";
 
 import styles from "./MePage.module.css";
+import CreatePostForm from "../../components/CreatePostForm/CreatePostForm";
 
 export default function MePage() {
     const navigate = useNavigate();
@@ -266,9 +267,13 @@ export default function MePage() {
         <section className={styles.postsSection}>
           <div className={styles.postsHeader}>
             <h2 className={styles.sectionTitle}>My posts</h2>
-
-            {/* <button className={styles.buttonPrimary}>New post</button> */}
           </div>
+          
+            <CreatePostForm
+              onPostCreated={ post => {
+                setUserPosts(prev => [post, ...prev])
+              }}
+            />
 
           {postsLoading && (
             <div className={styles.skeleton}>Loading your posts...</div>
