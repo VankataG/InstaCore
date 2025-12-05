@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { getPublicProfile, type PublicUserResponse } from "../../api/users";
+import { followUser, getPublicProfile, unfollowUser, type PublicUserResponse } from "../../api/users";
 import { getUserPosts, type PostResponse } from "../../api/posts";
 import { PostCard } from "../../components/PostCard/PostCard";
 
@@ -9,6 +9,9 @@ import styles from "./PublicProfilePage.module.css";
 
 export default function PublicProfilePage() {
     const { username } = useParams<{ username: string}>();
+
+    const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+    const [isUpdatingFollow, setIsUpdatingFollow] = useState<boolean>(false);
     
     const [profile, setProfile] = useState<PublicUserResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -20,6 +23,32 @@ export default function PublicProfilePage() {
 
     const [page, setPage] = useState<number>(1);
 
+    async function handleToggleFollow(){
+      if(isFollowing === null) return;
+
+      const token = localStorage.getItem("token");
+      if(!token || !username || !profile) return;
+
+      setIsUpdatingFollow(true);
+
+      try {
+        if (isFollowing) {
+          await unfollowUser(token, username);
+          setIsFollowing(false);
+          setProfile(prev => prev ? { ...prev, followers: prev.followers -1} : prev);
+        } else {
+          await followUser(token, username);
+          setIsFollowing(true);
+          setProfile(prev => prev ? { ...prev, followers: prev.followers + 1} : prev);
+        }
+      } catch (err: any) {
+        console.error(err.message);
+      } finally {
+        setIsUpdatingFollow(false);
+      }
+
+    }
+
     useEffect(() => {
         async function loadProfile() {
             if (!username) 
@@ -29,8 +58,11 @@ export default function PublicProfilePage() {
             setLoading(true);
 
             try {
-                const profile = await getPublicProfile(username);
+                const token = localStorage.getItem("token");
+                const profile = await getPublicProfile(username, token);
+
                 setProfile(profile);
+                setIsFollowing(profile.isFollowedByCurrentUser);
             } catch (err: any) {
                 setError(err.message ?? "Failed to load profile.");
             } finally {
@@ -126,6 +158,10 @@ export default function PublicProfilePage() {
                   </strong>{" "}
                   following
                 </span>
+                <button onClick={handleToggleFollow} disabled={isUpdatingFollow || loading || isFollowing === null}>
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </button>
+
               </div>
 
               {"bio" in profile && (profile as any).bio && (

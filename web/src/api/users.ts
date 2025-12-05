@@ -7,10 +7,14 @@ import { apiFetch } from "./client";
     avatarUrl: string | null;
     followers: number;
     following: number;
+    isFollowedByCurrentUser: boolean;
  };
  
- export async function getPublicProfile(username:string): Promise<PublicUserResponse> {
-    return apiFetch<PublicUserResponse>(`/api/users/${username}`)
+ export async function getPublicProfile(username:string, token?: string | null): Promise<PublicUserResponse> {
+    return apiFetch<PublicUserResponse>(`/api/users/${username}`, {
+      method: "GET",
+      token: token ?? undefined,
+    })
  }
 
 
