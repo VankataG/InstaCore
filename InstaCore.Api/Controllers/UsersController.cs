@@ -36,8 +36,10 @@ namespace InstaCore.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetPublicProfile(string username)
         {
-            UserResponse response = await userService.GetByUsernameAsync(username);
-            return Ok(new { response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
+            var userId = this.GetUserId();
+
+            UserResponse response = await userService.GetByUsernameAsync(username, userId);
+            return Ok(response);
         }
 
         [HttpPut("me")]

@@ -4,7 +4,7 @@ namespace InstaCore.Core.Services.Contracts
 {
     public interface IUserService
     {
-        Task<UserResponse> GetByUsernameAsync(string username);
+        Task<UserResponse> GetByUsernameAsync(string username, Guid? currentUserId);
 
         Task<UserResponse> GetMeAsync(Guid userId);
 

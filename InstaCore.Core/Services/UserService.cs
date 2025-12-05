@@ -20,7 +20,7 @@ namespace InstaCore.Core.Services
         }
 
         
-        public async Task<UserResponse> GetByUsernameAsync(string username)
+        public async Task<UserResponse> GetByUsernameAsync(string username, Guid? currentUserId)
         {
             User? user = await userRepository.GetByUsernameWithFollowsAsync(username);
 
@@ -29,7 +29,7 @@ namespace InstaCore.Core.Services
                 throw new NotFoundException("User not found");
             }
 
-            return UserMapper.ToResponse(user);
+            return UserMapper.ToResponse(user, currentUserId);
         }
 
         public async Task<UserResponse> GetMeAsync(Guid userId)
