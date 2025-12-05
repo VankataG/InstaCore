@@ -5,7 +5,7 @@ import { getMe } from "../../api/users";
 
 import styles from "./RegisterPage.module.css";
 
-export default function LoginPage() {
+export default function RegisterPage() {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
