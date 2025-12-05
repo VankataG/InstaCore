@@ -28,12 +28,16 @@ export type PostResponse = {
     return apiFetch(`/api/posts/user/${username}?page=${page}&pageSize=${pageSize}`);
  }
 
-//  export async function createPost(request: CreatePostRequest): Promise<PostResponse> {
-//     const token = localStorage.getItem("token");
 
-//     return apiFetch(`/api/posts`, {
-//         method: "POST",
-//         token,
-//         body: request,
-//     })
-//  }
+ export type CreatePostRequest = {
+   caption: string | null;
+   imageUrl?: string | null;
+ };
+
+ export async function createPost(token: string, request: CreatePostRequest): Promise<PostResponse> {
+    return apiFetch(`/api/posts`, {
+        method: "POST",
+        token,
+        body: request,
+    })
+ }
