@@ -8,6 +8,11 @@ import { apiFetch } from "./client";
     followers: number;
     following: number;
  };
+ 
+ export async function getPublicProfile(username:string): Promise<PublicUserResponse> {
+    return apiFetch<PublicUserResponse>(`/api/users/${username}`)
+ }
+
 
  export type MeResponse = {
     id: string;
@@ -18,16 +23,13 @@ import { apiFetch } from "./client";
     following: number;
  };
 
- export async function getPublicProfile(username:string): Promise<PublicUserResponse> {
-    return apiFetch<PublicUserResponse>(`/api/users/${username}`)
- }
-
  export async function getMe(token:string): Promise<MeResponse> {
     return apiFetch<MeResponse>(`/api/users/me`, {
         method: "GET",
         token
     });
  }
+
 
  export type UpdateProfileRequest= {
     bio?: string | null;
@@ -40,4 +42,19 @@ import { apiFetch } from "./client";
         token,
         body: request,
     });
+ }
+
+
+ export async function followUser(token: string, username: string) {
+   return apiFetch(`/api/users/${username}/follow`, {
+      method: "POST",
+      token,
+   });
+ }
+
+ export async function unfollowUser(token: string, username: string) {
+   return apiFetch(`/api/users/${username}/follow`, {
+      method: "DELETE",
+      token,
+   });
  }
