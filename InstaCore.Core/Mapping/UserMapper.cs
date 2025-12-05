@@ -14,5 +14,16 @@ namespace InstaCore.Core.Mapping
             Followers = user.Followers.Count(),
             Following = user.Following.Count(),
         };
+
+        public static UserResponse ToResponse(User user, Guid? currentUserId = null) => new()
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Bio = user.Bio,
+            AvatarUrl = user.AvatarUrl,
+            Followers = user.Followers.Count(),
+            Following = user.Following.Count(),
+            IsFollowedByCurrentUser = currentUserId.HasValue && user.Followers.Any(u => u.FollowerId == currentUserId.Value)
+        };
     }
 }
