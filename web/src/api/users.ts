@@ -5,6 +5,8 @@ import { apiFetch } from "./client";
     username: string;
     bio: string | null;
     avatarUrl: string | null;
+    followers: number;
+    following: number;
  };
 
  export type MeResponse = {
@@ -12,6 +14,8 @@ import { apiFetch } from "./client";
     username: string;
     bio: string | null;
     avatarUrl: string | null;
+    followers: number;
+    following: number;
  };
 
  export async function getPublicProfile(username:string): Promise<PublicUserResponse> {

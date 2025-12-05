@@ -203,19 +203,15 @@ export default function MePage() {
                   </span>
                   <span>
                     <strong>
-                      {"followersCount" in profile
-                        ? (profile as any).followersCount ?? 0
-                        : 0}
+                      {profile.followers}
                     </strong>{" "}
-                    followers
+                     followers
                   </span>
                   <span>
                     <strong>
-                      {"followingCount" in profile
-                        ? (profile as any).followingCount ?? 0
-                        : 0}
+                      {profile.following}
                     </strong>{" "}
-                    following
+                     following
                   </span>
                 </div>
 
