@@ -30,9 +30,11 @@ export async function apiFetch<TResponse>(path: string, options: RequestOptions 
         throw new Error(message);
     }
 
-    if (response.status === 204){
+    const text = await response.text();
+
+    if (!text){
         return undefined as TResponse;
     }
 
-    return await response.json() as TResponse;
+    return JSON.parse(text) as TResponse;
 }
