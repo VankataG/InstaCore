@@ -35,7 +35,11 @@ namespace InstaCore.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid postId)
         {
-            PostResponse response = await postService.GetByIdAsync(postId);
+            var currentUserId = this.GetUserId();
+            if (currentUserId == null)
+                return Unauthorized();
+
+            PostResponse response = await postService.GetByIdAsync(postId, currentUserId);
             return Ok(response);
         }
 
@@ -43,7 +47,10 @@ namespace InstaCore.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetUserPosts([FromRoute]string username, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var posts = await postService.GetByUserAsync(username, page, pageSize);
+            var currentUserId = this.GetUserId();
+            
+
+            var posts = await postService.GetByUserAsync(username, page, pageSize, currentUserId);
             return Ok(posts);
         }
 

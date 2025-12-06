@@ -6,9 +6,9 @@ namespace InstaCore.Core.Services.Contracts
     {
         Task<PostResponse> CreateAsync(Guid userId, CreatePostRequest request);
 
-        Task<PostResponse> GetByIdAsync(Guid postId);
+        Task<PostResponse> GetByIdAsync(Guid postId, Guid? currentUserId);
 
-        Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int page, int pageSize);
+        Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int page, int pageSize, Guid? currentuserId);
 
         Task<IReadOnlyList<PostResponse>> GetFeedAsync(Guid userId, int page, int pageSize);
 

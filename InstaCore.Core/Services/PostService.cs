@@ -61,18 +61,17 @@ namespace InstaCore.Core.Services
             await postRepository.DeleteAsync(post);
         }
 
-        public async Task<PostResponse> GetByIdAsync(Guid postId)
+        public async Task<PostResponse> GetByIdAsync(Guid postId, Guid? currentUserId)
         {
             Post? post = await postRepository.GetByIdAsync(postId);
 
             if (post == null)
                 throw new NotFoundException("Post not found.");
 
-            User user = post.User;
-            return PostMapper.ToResponse(post, user);
+            return PostMapper.ToResponse(post, currentUserId);
         }
 
-        public async Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int page, int pageSize)
+        public async Task<IReadOnlyList<PostResponse>> GetByUserAsync(string username, int page, int pageSize, Guid? currentUserId)
         {
             this.CheckPageAndPageSize(page, pageSize);
 
@@ -85,7 +84,7 @@ namespace InstaCore.Core.Services
 
             IReadOnlyList<Post> posts = await postRepository.GetByUserAsync(user.Id, skip, take);
 
-            return posts.Select(p => PostMapper.ToResponse(p, user)).ToList().AsReadOnly();
+            return posts.Select(p => PostMapper.ToResponse(p, currentUserId)).ToList().AsReadOnly();
         }
 
         public async Task<IReadOnlyList<PostResponse>> GetFeedAsync(Guid userId, int page, int pageSize)
@@ -109,7 +108,7 @@ namespace InstaCore.Core.Services
 
             IReadOnlyList<Post> feed = await postRepository.GetFeedAsync(authorIds, skip, take);
 
-            return feed.Select(p => PostMapper.ToResponse(p, p.User)).ToList().AsReadOnly();
+            return feed.Select(p => PostMapper.ToResponse(p, userId)).ToList().AsReadOnly();
         }
 
         private void CheckPageAndPageSize(int page, int pageSize)

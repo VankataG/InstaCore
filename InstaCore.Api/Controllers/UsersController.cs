@@ -28,7 +28,7 @@ namespace InstaCore.Api.Controllers
 
             UserResponse response = await userService.GetMeAsync(userId.Value);
 
-            return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl, response.Followers, response.Following });
+            return Ok(response);
         }
 
 

@@ -43,9 +43,10 @@ namespace InstaCore.Infrastructure.Repositories
         {
             return await dbContext
                 .Posts
+                .Where(p => p.UserId == userId)
+                .Include (p => p.User)
                 .Include(p => p.Likes)
                 .Include(p => p.Comments)
-                .Where(p => p.UserId == userId)
                 .OrderByDescending(p => p.CreatedAt)
                 .Skip(skip)
                 .Take(take)
