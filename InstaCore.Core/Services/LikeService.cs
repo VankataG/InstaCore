@@ -1,6 +1,7 @@
 ﻿using InstaCore.Core.Contracts.Repos;
 using InstaCore.Core.Dtos.Likes;
 using InstaCore.Core.Exceptions;
+using InstaCore.Core.Mapping;
 using InstaCore.Core.Models;
 using InstaCore.Core.Services.Contracts;
 
@@ -44,15 +45,9 @@ namespace InstaCore.Core.Services
 
             await likeRepository.AddAsync(newLike);
 
-            return new LikeResponse()
-            {
-                LikeId = newLike.Id,
-                PostId = postId,
-                Username = user.Username,
-                Liked = true,
-                TotalLikes = await likeRepository.GetTotalLikesCountAsync(postId),
-                CreatedAt = newLike.CreatedAt
-            };
+            int totalLikes = await likeRepository.GetTotalLikesCountAsync(postId);
+
+            return LikeMapper.ToResponse(newLike, postId, user, totalLikes);
         }
 
         public async Task<LikeResponse> UnlikeAsync(Guid userId, Guid postId)
@@ -72,13 +67,9 @@ namespace InstaCore.Core.Services
 
             await likeRepository.DeleteAsync(like);
 
-            return new LikeResponse()
-            {
-                PostId = postId,
-                Username = user.Username,
-                Liked = false,
-                TotalLikes = await likeRepository.GetTotalLikesCountAsync(postId)
-            };
+            int totalLikes = await likeRepository.GetTotalLikesCountAsync(postId);
+
+            return LikeMapper.ToResponse(postId, user, totalLikes);
         }
     }
 }
