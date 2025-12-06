@@ -6,8 +6,9 @@ export type PostResponse = {
     imageUrl: string | null;
     username: string;
     createdAt: string;
-    totalLikes: number;
-    totalComments: number;
+    likes: number;
+    comments: number;
+    isLikedByCurrentUser: boolean;
  };
 
  export async function getFeed(page:number, pageSize:number): Promise<PostResponse[]> {
@@ -25,7 +26,12 @@ export type PostResponse = {
  }
 
  export async function getUserPosts(username: string, page: number, pageSize: number): Promise<PostResponse[]> {
-    return apiFetch(`/api/posts/user/${username}?page=${page}&pageSize=${pageSize}`);
+   const token = localStorage.getItem("token");
+
+    return apiFetch(`/api/posts/user/${username}?page=${page}&pageSize=${pageSize}`, {
+      method: "GET",
+      token: token ?? undefined,
+    });
  }
 
 
@@ -39,5 +45,27 @@ export type PostResponse = {
         method: "POST",
         token,
         body: request,
-    })
+    });
+ }
+
+ export type LikeResponse = {
+   likeId: string | null;
+   postId: string;
+   username: string;
+   liked: boolean;
+   totalLikes: number;
+ };
+
+ export async function likePost(token: string, postId: string): Promise<LikeResponse> {
+   return apiFetch(`/api/likes/${postId}/like`, {
+      method: "POST",
+      token,
+   });
+ }
+
+ export async function unlikePost(token: string, postId: string) : Promise<LikeResponse> {
+   return apiFetch(`/api/likes/${postId}/like`, {
+      method: "DELETE",
+      token,
+   });
  }
