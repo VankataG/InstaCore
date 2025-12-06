@@ -2,6 +2,7 @@
 using InstaCore.Core.Contracts.Repos;
 using InstaCore.Core.Dtos;
 using InstaCore.Core.Exceptions;
+using InstaCore.Core.Mapping;
 using InstaCore.Core.Models;
 using InstaCore.Core.Services.Contracts;
 
@@ -33,14 +34,7 @@ namespace InstaCore.Core.Services
 
             var token = jwtTokenService.CreateAccessToken(user);
 
-            return new AuthResponse()
-            {
-                Token = token,
-                UserId = user.Id,
-                Username = user.Username,
-            };
-
-
+            return AuthMapper.ToResponse(token, user);
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
@@ -64,12 +58,7 @@ namespace InstaCore.Core.Services
 
             var token = jwtTokenService.CreateAccessToken(newUser);
 
-            return new AuthResponse()
-            { 
-                Token = token,
-                UserId = newUser.Id,
-                Username = newUser.Username,
-            };
+            return AuthMapper.ToResponse(token, newUser);
         }
     }
 }

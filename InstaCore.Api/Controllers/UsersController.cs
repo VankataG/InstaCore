@@ -51,7 +51,7 @@ namespace InstaCore.Api.Controllers
 
             UserResponse response = await userService.UpdateProfileAsync(userId.Value, request);
 
-            return Ok(new { response.Id, response.Username, response.Bio, response.AvatarUrl });
+            return Ok(response);
         }
 
 
