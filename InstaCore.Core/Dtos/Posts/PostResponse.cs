@@ -16,6 +16,7 @@
 
         public DateTime CreatedAt { get; set; }
 
+        public bool IsLikedByCurrentUser { get; set; }
 
     }
 }

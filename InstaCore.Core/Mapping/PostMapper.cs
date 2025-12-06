@@ -15,5 +15,17 @@ namespace InstaCore.Core.Mapping
             Comments = post.Comments.Count,
             CreatedAt = post.CreatedAt
         };
+
+        public static PostResponse ToResponse(Post post, Guid? currentUserId = null) => new()
+        {
+            Id = post.Id,
+            Username = post.User.Username,
+            Caption = post.Caption,
+            ImageUrl = post.ImageUrl,
+            Likes = post.Likes.Count,
+            Comments = post.Comments.Count,
+            CreatedAt = post.CreatedAt,
+            IsLikedByCurrentUser = currentUserId.HasValue && post.Likes.Any(l => l.UserId == currentUserId)
+        };
     }
 }
