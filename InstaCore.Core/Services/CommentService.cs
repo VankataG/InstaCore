@@ -44,7 +44,7 @@ namespace InstaCore.Core.Services
 
             await commentRepository.AddAsync(newComment);
 
-            return CommentMapping.ToResponse(newComment);
+            return CommentMapping.ToResponse(newComment, user);
         }
 
         public async Task DeleteCommentAsync(Guid userId, Guid commentId)

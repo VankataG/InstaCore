@@ -13,5 +13,14 @@ namespace InstaCore.Core.Mapping
             Text = comment.Text,
             CreatedAt = comment.CreatedAt
         };
+
+        public static CommentResponse ToResponse(Comment comment, User user) => new()
+        {
+            CommentId = comment.Id,
+            PostId = comment.PostId,
+            Username = user.Username,
+            Text = comment.Text,
+            CreatedAt = comment.CreatedAt
+        };
     }
 }
