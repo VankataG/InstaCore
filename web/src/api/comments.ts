@@ -25,3 +25,10 @@ export async function addComment(token: string, postId: string, request: CreateC
         body: request
     });
 } 
+
+export async function deleteComment(token: string, postId: string, commentId: string){
+    return apiFetch(`/api/comments/${postId}/comments/${commentId}`, {
+        method: "DELETE",
+        token,
+    });
+}
