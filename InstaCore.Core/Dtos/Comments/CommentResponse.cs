@@ -2,8 +2,14 @@
 {
     public class CommentResponse
     {
-        public string User { get; set; } = null!;
+        public Guid CommentId { get; set; }
+
+        public Guid PostId { get; set; }
+
+        public string Username { get; set; } = null!;
 
         public string Text { get; set; } = null!;
+
+        public DateTime CreatedAt { get; set; }
     }
 }
