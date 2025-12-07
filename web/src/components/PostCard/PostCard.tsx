@@ -2,6 +2,7 @@ import styles from "./PostCard.module.css";
 
 import { likePost, unlikePost, type PostResponse } from "../../api/posts";
 import { useEffect, useState } from "react";
+import { CommentSection } from "../CommentSection/CommentSection";
 
 type Props = {
     post: PostResponse;
@@ -12,11 +13,13 @@ export function PostCard({post}: Props){
     const caption = (post as any).caption ?? "";
     const imageUrl = (post as any).imageUrl ?? null;
     const username = (post as any).username ?? "User not found";
-    const commentCount = (post as any).totalComments ?? 0;
+    const commentCount = (post as any).comments ?? 0;
     const createdAt = (post as any).createdAt ? new Date((post as any).createdAt).toLocaleString() : null;
 
     const [isLiked, setIsLiked] = useState<boolean>(post.isLikedByCurrentUser);
     const [likeCount, setLikeCount] = useState<number>(post.likes);
+
+    const [viewComments, setViewComments] = useState<boolean>(false);    
 
     useEffect(() => {
       setIsLiked(post.isLikedByCurrentUser);
@@ -38,6 +41,8 @@ export function PostCard({post}: Props){
       }
     }
 
+    
+
     return (
     <article className={styles.card}>
       {username}  
@@ -56,11 +61,14 @@ export function PostCard({post}: Props){
             <button onClick={handleToggleLike}>
               {isLiked ? "♥" : "♡"} {likeCount}
             </button>
-            <button>
+            <button onClick={() => setViewComments(prev => !prev)}>
               💬 {commentCount}
             </button> 
           </span>
         </div>
+        {viewComments && (
+          <CommentSection postId={post.id} />
+        )}
       </div>
     </article>
   );
