@@ -12,3 +12,16 @@ export type CommentResponse = {
 export async function getPostComments(postId: string): Promise<CommentResponse[]> {
     return apiFetch(`/api/comments/${postId}/comments`);
 }
+
+
+export type CreateCommentRequest = {
+    text: string;
+};
+
+export async function addComment(token: string, postId: string, request: CreateCommentRequest): Promise<CommentResponse> {
+    return apiFetch(`/api/comments/${postId}/comments`, {
+        method: "POST",
+        token,
+        body: request
+    });
+} 
