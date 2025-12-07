@@ -1,6 +1,7 @@
 ﻿using InstaCore.Core.Contracts.Repos;
 using InstaCore.Core.Dtos.Comments;
 using InstaCore.Core.Exceptions;
+using InstaCore.Core.Mapping;
 using InstaCore.Core.Models;
 using InstaCore.Core.Services.Contracts;
 
@@ -22,7 +23,7 @@ namespace InstaCore.Core.Services
         }
 
 
-        public async Task<CreateCommentResponse> AddCommentAsync(Guid userId, Guid postId, CreateCommentRequest request)
+        public async Task<CommentResponse> AddCommentAsync(Guid userId, Guid postId, CreateCommentRequest request)
         {
             if (string.IsNullOrEmpty(request.Text))
                 throw new NotFoundException("You can't add empty comment");
@@ -43,13 +44,7 @@ namespace InstaCore.Core.Services
 
             await commentRepository.AddAsync(newComment);
 
-            return new CreateCommentResponse()
-            {
-                CommentId = newComment.Id,
-                PostId = newComment.PostId,
-                Username = user.Username,
-                Text = newComment.Text,
-            };
+            return CommentMapping.ToResponse(newComment);
         }
 
         public async Task DeleteCommentAsync(Guid userId, Guid commentId)
@@ -71,21 +66,19 @@ namespace InstaCore.Core.Services
                 throw new NotImplementedException("Post not found.");
 
             IEnumerable<Comment> comments = await commentRepository.GetAllCommentsAsync(postId);
-            if (comments.Count() <= 0)
-                throw new NotFoundException("Post don't have any comments.");
 
             List<CommentResponse> responseList = new List<CommentResponse>();
 
-            foreach (Comment comment in comments)
+            if (comments.Count() > 0)
             {
-                CommentResponse response = new CommentResponse()
+                foreach (Comment comment in comments)
                 {
-                    User = comment.User.Username,
-                    Text = comment.Text,
-                };
+                    CommentResponse response = CommentMapping.ToResponse(comment);
 
-                responseList.Add(response);
+                    responseList.Add(response);
+                }
             }
+
             return responseList;
         }
     }

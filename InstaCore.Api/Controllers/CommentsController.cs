@@ -27,7 +27,7 @@ namespace InstaCore.Api.Controllers
             if (userId == null)
                 return Unauthorized();
 
-            CreateCommentResponse response = await commentService.AddCommentAsync(userId.Value, postId, request);
+            CommentResponse response = await commentService.AddCommentAsync(userId.Value, postId, request);
             return CreatedAtAction(nameof(ViewComments), new { postId }, response);
         }
 

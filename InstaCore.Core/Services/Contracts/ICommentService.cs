@@ -4,7 +4,7 @@ namespace InstaCore.Core.Services.Contracts
 {
     public interface ICommentService
     {
-        public Task<CreateCommentResponse> AddCommentAsync(Guid userId, Guid postId, CreateCommentRequest request);
+        public Task<CommentResponse> AddCommentAsync(Guid userId, Guid postId, CreateCommentRequest request);
 
         public Task<IEnumerable<CommentResponse>> ViewAllCommentsAsync(Guid postId);
 
