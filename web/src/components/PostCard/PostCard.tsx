@@ -1,7 +1,8 @@
 import styles from "./PostCard.module.css";
 
-import { likePost, unlikePost, type PostResponse } from "../../api/posts";
+import { type PostResponse } from "../../api/posts";
 import { useEffect, useState } from "react";
+import { likePost, unlikePost } from "../../api/likes";
 import { CommentSection } from "../CommentSection/CommentSection";
 
 type Props = {
