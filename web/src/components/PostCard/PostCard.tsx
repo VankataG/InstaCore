@@ -14,18 +14,19 @@ export function PostCard({post}: Props){
     const caption = (post as any).caption ?? "";
     const imageUrl = (post as any).imageUrl ?? null;
     const username = (post as any).username ?? "User not found";
-    const commentCount = (post as any).comments ?? 0;
     const createdAt = (post as any).createdAt ? new Date((post as any).createdAt).toLocaleString() : null;
 
     const [isLiked, setIsLiked] = useState<boolean>(post.isLikedByCurrentUser);
     const [likeCount, setLikeCount] = useState<number>(post.likes);
 
-    const [viewComments, setViewComments] = useState<boolean>(false);    
+    const [viewComments, setViewComments] = useState<boolean>(false);   
+    const [commentCount, setCommentCount] = useState<number>(post.comments) 
 
     useEffect(() => {
       setIsLiked(post.isLikedByCurrentUser);
       setLikeCount(post.likes);
-    }, [post.id, post.isLikedByCurrentUser, post.likes])
+      setCommentCount(post.comments);
+    }, [post.id, post.isLikedByCurrentUser, post.likes, post.comments])
 
     async function handleToggleLike(){
       const token = localStorage.getItem("token");
@@ -68,7 +69,12 @@ export function PostCard({post}: Props){
           </span>
         </div>
         {viewComments && (
-          <CommentSection postId={post.id} />
+          <CommentSection 
+            postId={post.id}
+            onCommentCreated={() => {
+              setCommentCount( c => c + 1);
+            }}
+          />
         )}
       </div>
     </article>

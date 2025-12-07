@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { type CommentResponse, getPostComments } from "../../api/comments";
 
 import styles from "./CommentSection.module.css";
+import CreateCommentForm from "../CreateCommentForm/CreateCommentForm";
 
 type CommentSectionProps = {
     postId: string;
+    onCommentCreated: (comment: CommentResponse) => void;
 }
 
-export function CommentSection({ postId }: CommentSectionProps) {
+export function CommentSection({ postId, onCommentCreated}: CommentSectionProps) {
     const [comments, setComments] = useState<CommentResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -38,12 +40,18 @@ export function CommentSection({ postId }: CommentSectionProps) {
       return <div className={styles.errorBox}>{error}</div>;
     }
 
-    if (comments.length === 0) {
-      return <div className={styles.emptyText}>No comments yet.</div>;
-    }
-
     return (
       <div className={styles.commentsWrapper}>
+        <CreateCommentForm 
+            postId={postId} 
+            onCommentCreated={(comment) => {
+                setComments(prev => [comment, ...prev]);
+
+                if(onCommentCreated){
+                    onCommentCreated(comment)
+                }
+            }}
+        />
         {comments.map((comment) => (
           <div key={comment.id} className={styles.comment}>
             <div className={styles.commentHeader}>
