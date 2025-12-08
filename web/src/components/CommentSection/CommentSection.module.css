@@ -66,11 +66,16 @@
   line-height: 1.35;
 }
 
-.errorBox {
-  padding: 0.7rem 0.9rem;
-  border-radius: 10px;
-  background: #7f1d1d;
-  color: #fee2e2;
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
+.deleteButton {
+  border: none;
+  background: transparent;
+  color: #f97373;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.1rem 0.25rem;
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: default;
 }

@@ -71,8 +71,12 @@ export function PostCard({post}: Props){
         {viewComments && (
           <CommentSection 
             postId={post.id}
+            currentUserUsername={post.username}
             onCommentCreated={() => {
               setCommentCount( c => c + 1);
+            }}
+            onCommentDeleted={() => {
+              setCommentCount( c => Math.max(0, c - 1));
             }}
           />
         )}

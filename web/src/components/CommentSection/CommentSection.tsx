@@ -6,16 +6,17 @@ import CreateCommentForm from "../CreateCommentForm/CreateCommentForm";
 
 type CommentSectionProps = {
     postId: string;
+    currentUserUsername: string;
     onCommentCreated: (comment: CommentResponse) => void;
-}
+    onCommentDeleted: (commentId: string) => void;
+};
 
-export function CommentSection({ postId, onCommentCreated}: CommentSectionProps) {
+export function CommentSection({ postId, currentUserUsername, onCommentCreated, onCommentDeleted}: CommentSectionProps) {
     const [comments, setComments] = useState<CommentResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [isDeleting, setIsDeleting] = useState<boolean>(false);
-    const [deleteError, setDeleteError] = useState<string | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
     useEffect(() => {
         async function loadComments(){
@@ -36,23 +37,24 @@ export function CommentSection({ postId, onCommentCreated}: CommentSectionProps)
     }, [ postId ]);
 
     async function handleDelete(commentId: string){
-        setDeleteError(null);
-
         const token = localStorage.getItem("token");
-        if (!token){
-            setDeleteError("You can't delete this comment.");
-            return;
-        }
-
-        setIsDeleting(true);
+        if (!token)  return;
+        
+        
+        setError(null);
+        setDeletingId(commentId);
 
         try {
             await deleteComment(token, postId, commentId);
             setComments(prev => prev.filter(c => c.commentId !== commentId));
+            
+            if(onCommentDeleted) {
+              onCommentDeleted(commentId);
+            }
         } catch (err: any) {
-            setDeleteError(err.message ?? `Something went wrong, try again later.`)
+            setError(err.message ?? `Something went wrong, try again later.`)
         } finally {
-            setIsDeleting(false);
+            setDeletingId(null);
         }
     };
 
@@ -83,14 +85,15 @@ export function CommentSection({ postId, onCommentCreated}: CommentSectionProps)
               <span className={styles.date}>
                 {new Date(comment.createdAt).toLocaleString()}
               </span>
-              <button 
-                onClick={() => handleDelete(comment.commentId)}
-                disabled={isDeleting}
-              >
-                X
-              </button>
+              {currentUserUsername === comment.username && 
+                <button 
+                  className={styles.deleteButton}
+                  onClick={() => handleDelete(comment.commentId)}
+                  disabled={deletingId === comment.commentId}
+                >
+                  X
+                </button>}
             </div>
-            {deleteError && <div className={styles.errorBox}>{error}</div>}
             <p className={styles.content}>{comment.text}</p>
           </div>
         ))}
