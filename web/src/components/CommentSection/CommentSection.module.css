@@ -65,3 +65,12 @@
   font-size: 0.9rem;
   line-height: 1.35;
 }
+
+.errorBox {
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  background: #7f1d1d;
+  color: #fee2e2;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}

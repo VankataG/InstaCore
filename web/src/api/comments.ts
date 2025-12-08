@@ -2,7 +2,7 @@ import { apiFetch } from "./client";
 
 
 export type CommentResponse = {
-    id: string;
+    commentId: string;
     postId: string;
     username: string;
     text: string;
