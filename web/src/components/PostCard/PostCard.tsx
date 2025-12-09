@@ -4,6 +4,7 @@ import { type PostResponse } from "../../api/posts";
 import { useEffect, useState } from "react";
 import { likePost, unlikePost } from "../../api/likes";
 import { CommentSection } from "../CommentSection/CommentSection";
+import { useUser } from "../../hooks/useUser";
 
 type Props = {
     post: PostResponse;
@@ -11,6 +12,9 @@ type Props = {
 
 
 export function PostCard({post}: Props){
+    const userContext = useUser();
+    const currentUserUsername = userContext.user?.username;
+
     const caption = (post as any).caption ?? "";
     const imageUrl = (post as any).imageUrl ?? null;
     const username = (post as any).username ?? "User not found";
@@ -71,7 +75,7 @@ export function PostCard({post}: Props){
         {viewComments && (
           <CommentSection 
             postId={post.id}
-            currentUserUsername={post.username}
+            currentUserUsername={currentUserUsername}
             onCommentCreated={() => {
               setCommentCount( c => c + 1);
             }}

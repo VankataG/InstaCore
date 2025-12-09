@@ -6,7 +6,7 @@ import CreateCommentForm from "../CreateCommentForm/CreateCommentForm";
 
 type CommentSectionProps = {
     postId: string;
-    currentUserUsername: string;
+    currentUserUsername: string | undefined;
     onCommentCreated: (comment: CommentResponse) => void;
     onCommentDeleted: (commentId: string) => void;
 };
@@ -86,13 +86,13 @@ export function CommentSection({ postId, currentUserUsername, onCommentCreated, 
                 {new Date(comment.createdAt).toLocaleString()}
               </span>
               {currentUserUsername === comment.username && 
-                <button 
-                  className={styles.deleteButton}
-                  onClick={() => handleDelete(comment.commentId)}
-                  disabled={deletingId === comment.commentId}
-                >
-                  X
-                </button>}
+              <button 
+                className={styles.deleteButton}
+                onClick={() => handleDelete(comment.commentId)}
+                disabled={deletingId === comment.commentId}
+              >
+                X
+              </button>}
             </div>
             <p className={styles.content}>{comment.text}</p>
           </div>
