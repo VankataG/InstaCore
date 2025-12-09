@@ -122,7 +122,12 @@ export default function RegisterPage() {
 
           <p className={styles.footerText}>
             Already have an account?{" "}
-            <span className={styles.link}>Log in</span>
+            <button 
+              onClick={() => navigate("/login")}
+              className={styles.link}
+            >
+              Log in
+            </button>
           </p>
         </div>
       </div>
