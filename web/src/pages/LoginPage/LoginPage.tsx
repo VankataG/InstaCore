@@ -1,17 +1,24 @@
-import { useState } from "react";
-import { login } from "../../api/auth"
-import { getMe } from "../../api/users";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { login } from "../../api/auth"
+import { useUser } from "../../hooks/useUser";
 
 import styles from "./LoginPage.module.css";
 
-
 export default function LoginPage() {
     const navigate = useNavigate();
+    const { user, loadingUser, refreshUser } = useUser();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+      if (!loadingUser && user){
+        navigate("/me");
+      }
+    }, [ loadingUser, user, navigate]);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -23,12 +30,12 @@ export default function LoginPage() {
         }
 
         try {
-            const result = await login(email, password);
-            localStorage.setItem("token", result.token);
+            const response = await login(email, password);
+            localStorage.setItem("token", response.token);
 
-            await getMe(result.token);
+            await refreshUser();
 
-            navigate("/me");
+            navigate("/feed");
         } catch (err: any) {
             setError(err.message ?? "Login failed.");
         }
@@ -50,12 +57,12 @@ export default function LoginPage() {
                 Email
               </label>
               <input
-                id="username"
-                type="text"
+                id="email"
+                type="email"
                 className={styles.input}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                autoComplete="username"
+                autoComplete="email"
               />
             </div>
 
@@ -73,15 +80,21 @@ export default function LoginPage() {
               />
             </div>
 
-            <button type="submit" className={styles.button}>Log in</button>
+            <button 
+              type="submit" 
+              className={styles.button}>Log in</button>
+
           </form>
 
           <p className={styles.footerText}>
             Don&apos;t have an account yet?{" "}
-            <span className={styles.link}>Sign up (soon)</span>
+            <button 
+              onClick={ () => navigate("/register") }
+              className={styles.link}>
+                Sign up
+            </button>
           </p>
         </div>
       </div>
     );
-
 }
