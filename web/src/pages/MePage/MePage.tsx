@@ -244,7 +244,13 @@ export default function MePage() {
           {!postsLoading && !postsError && userPosts && userPosts.length > 0 && (
             <div className={styles.postsGrid}>
               {userPosts.map((post) => (
-                <PostCard key={(post as any).id} post={post} />
+                <PostCard 
+                  key={(post as any).id} 
+                  post={post}
+                  onPostDeleted={ id => {
+                      setUserPosts(prev => prev.filter(p => p.id !== id))
+                  }}
+                />
               ))}
             </div>
           )}

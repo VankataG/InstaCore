@@ -83,7 +83,13 @@ export default function FeedPage() {
             <>
               <div className={styles.postsList}>
                 {posts.map((post) => (
-                  <PostCard key={post.id} post={post} />
+                  <PostCard 
+                    key={post.id} 
+                    post={post} 
+                    onPostDeleted={ id => {
+                      setPosts(prev => prev.filter(p => p.id !== id))
+                    }}
+                  />
                 ))}
               </div>
 
