@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getMe, updateProfile, type MeResponse } from "../../api/users";
+import { updateProfile} from "../../api/users";
 import { PostCard } from "../../components/PostCard/PostCard";
 import { getUserPosts, type PostResponse } from "../../api/posts";
 
 import styles from "./MePage.module.css";
 import CreatePostForm from "../../components/CreatePostForm/CreatePostForm";
+import { useUser } from "../../hooks/useUser";
 
 export default function MePage() {
     const navigate = useNavigate();
-
-    const [profile, setProfile] = useState<MeResponse | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+    const { user, loadingUser, refreshUser, logout } = useUser();
 
     const [userPosts, setUserPosts] = useState<PostResponse[]>([]);
     const [postsLoading, setPostsLoading] = useState<boolean>(true);
@@ -25,39 +23,15 @@ export default function MePage() {
     const [editAvatar, setEditAvatar] = useState<string | null>(null);
     const [editError, setEditError] = useState<string | null>(null);
 
-    useEffect(() => {
-        async function loadMe() {
-            setError(null);
-            setLoading(true);
-
-            const token = localStorage.getItem("token");
-            if (!token) {
-                setError("No token found. Please login first.");
-                setLoading(false);
-                return;
-            }
-
-            try {
-                const me = await getMe(token);
-                setProfile(me);
-            } catch (err: any) {
-                setError(err.message ?? "Failed to load /me.");
-            } finally {
-                setLoading(false);
-            }            
-        }
-
-        loadMe();
-    }, []);
 
     useEffect(() => {
         async function loadPosts() {
-            if(profile){
+            if(user){
                 setPostsError(null);
                 setPostsLoading(true);
 
                 try{
-                    const response = await getUserPosts(profile.username, page, 6);
+                    const response = await getUserPosts(user.username, page, 6);
                     setUserPosts(response)
                 } catch (err: any) {
                     setPostsError(err.message || "Failed to load user posts.");
@@ -68,10 +42,10 @@ export default function MePage() {
             }
         }
         loadPosts();
-    }, [profile, page]);
+    }, [user, page]);
 
     async function editProfile() {
-        if(!profile) return;
+        if(!user) return;
 
         const token = localStorage.getItem("token");
         if (!token) {
@@ -85,10 +59,10 @@ export default function MePage() {
             setEditing(true);
             
             const request = { bio: editBio , avatarUrl: editAvatar};
-            const response = await updateProfile(request, token);
-            setProfile(response)
+            await updateProfile(request, token);
+            await refreshUser();
         } catch (err: any) {
-            setEditError(err.message);
+            setEditError(err.message ?? "Failed to update profile.");
         } finally {
             setEditing(false);
         }
@@ -96,12 +70,12 @@ export default function MePage() {
     }
 
     function startEdit(){
-        if (!profile) return;
+        if (!user) return;
 
         setEditing(true);
         setEditError(null);
-        setEditBio(profile.bio);
-        setEditAvatar(profile.avatarUrl);
+        setEditBio(user.bio);
+        setEditAvatar(user.avatarUrl);
     }
 
     function cancelEdit(){
@@ -110,23 +84,23 @@ export default function MePage() {
     }
 
     function handleLogout() {
-        localStorage.removeItem("token");
+        logout();
         navigate("/login");
     }
 
-    if (error) {
+
+    if (loadingUser) {
         return (
-            <div style= {{ padding: "2rem"}}>
-                <p style={{ color: "red"}}>{error}</p>
-                <button onClick={() => navigate("/login")}>Go to login</button>
-            </div>
+          <div style={{ padding: "2rem" }}>
+            <p>Loading your profile...</p>
+          </div>
         );
     }
 
-    if (!profile) {
+    if (!user) {
         return (
           <div style={{ padding: "2rem" }}>
-            <p>No profile loaded.</p>
+            <p>No profile loaded. Please login.</p>
             <button onClick={() => navigate("/login")}>Go to login</button>
           </div>
         );
@@ -135,129 +109,113 @@ export default function MePage() {
     return (
       <div className={styles.pageContainer}>
         <section className={styles.profileSection}>
-          {loading && (
-            <div className={styles.skeleton}>Loading your profile...</div>
-          )}
-
-          {error && <div className={styles.errorBox}>{error}</div>}
-
-          {profile && !loading && !error && (
-            <div className={styles.profileCard}>
-              <div className={styles.avatarWrapper}>
-                {"avatarUrl" in profile && (profile as any).avatarUrl ? (
-                  <img
-                    src={(profile as any).avatarUrl}
-                    alt={profile.username}
-                    className={styles.avatarImage}
-                  />
-                ) : (
-                  <div className={styles.avatarInitials}>
-                    {profile.username[0]?.toUpperCase()}
-                  </div>
-                )}
-
-                {editing && (
-                    <div className={styles.editAvatarField}>
-                        <label className={styles.label} htmlFor="avatarUrl">Avatar URL</label>
-                        <input id="avatarUrl" 
-                            type="text" 
-                            className={styles.input}
-                            value={editAvatar ?? ""}
-                            onChange={(e) => setEditAvatar(e.target.value)}
-                        />
-                    </div>
-                )}
-              </div>
-
-              <div className={styles.profileMain}>
-                <div className={styles.topRow}>
-                  <h1 className={styles.username}>{profile.username}</h1>
-
-                  <div className={styles.actions}>
-                    <button
-                      type="button"
-                      className={styles.buttonSecondary}
-                      onClick={startEdit}
-                    >
-                      Edit profile
-                    </button>
-
-                    <button
-                      type="button"
-                      className={styles.buttonGhost}
-                      onClick={handleLogout}
-                    >
-                      Log out
-                    </button>
-                  </div>
+          <div className={styles.profileCard}>
+            <div className={styles.avatarWrapper}>
+              {"avatarUrl" in user && (user as any).avatarUrl ? (
+                <img
+                  src={(user as any).avatarUrl}
+                  alt={user.username}
+                  className={styles.avatarImage}
+                />
+              ) : (
+                <div className={styles.avatarInitials}>
+                  {user.username[0]?.toUpperCase()}
                 </div>
-
-                <div className={styles.stats}>
-                  <span>
-                    <strong>
-                      {"postsCount" in profile && (profile as any).postsCount != null
-                        ? (profile as any).postsCount
-                        : userPosts?.length ?? 0}
-                    </strong>{" "}
-                    posts
-                  </span>
-                  <span>
-                    <strong>
-                      {profile.followers}
-                    </strong>{" "}
-                     followers
-                  </span>
-                  <span>
-                    <strong>
-                      {profile.following}
-                    </strong>{" "}
-                     following
-                  </span>
-                </div>
-
-                {!editing ? (
-                    profile.bio ? (
-                        <p className={styles.bio}>{profile.bio}</p>
-                    ) : (
-                        <p className={styles.bioPlaceholder}>You don't have a bio yet.</p>
-                    )
-                ) : (
-                    <div className={styles.editBioField}>
-                      <label className={styles.label} htmlFor="bio">
-                        Bio
-                      </label>
-                      <textarea
-                        id="bio"
-                        className={styles.textarea}
-                        rows={3}
-                        value={editBio ?? ""}
-                        onChange={(e) => setEditBio(e.target.value)}
-                        placeholder="Write something about yourself..."
+              )}
+              {editing && (
+                  <div className={styles.editAvatarField}>
+                      <label className={styles.label} htmlFor="avatarUrl">Avatar URL</label>
+                      <input id="avatarUrl" 
+                          type="text" 
+                          className={styles.input}
+                          value={editAvatar ?? ""}
+                          onChange={(e) => setEditAvatar(e.target.value)}
                       />
-
-                      {editError && <div className={styles.errorBox}>{editError}</div>}
-
-                      <div className={styles.editActions}>
-                        <button
-                          type="button"
-                          className={styles.buttonSecondary}
-                          onClick={editProfile}
-                        >
-                          Save
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.buttonGhost}
-                          onClick={cancelEdit}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                )}
-              </div>
+                  </div>
+              )}
             </div>
-          )}
+            <div className={styles.profileMain}>
+              <div className={styles.topRow}>
+                <h1 className={styles.username}>{user.username}</h1>
+                <div className={styles.actions}>
+                  <button
+                    type="button"
+                    className={styles.buttonSecondary}
+                    onClick={startEdit}
+                  >
+                    Edit profile
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.buttonGhost}
+                    onClick={handleLogout}
+                  >
+                    Log out
+                  </button>
+                </div>
+              </div>
+              <div className={styles.stats}>
+                <span>
+                  <strong>
+                    {"postsCount" in user && (user as any).postsCount != null
+                      ? (user as any).postsCount
+                      : userPosts?.length ?? 0}
+                  </strong>{" "}
+                  posts
+                </span>
+                <span>
+                  <strong>
+                    {user.followers}
+                  </strong>{" "}
+                   followers
+                </span>
+                <span>
+                  <strong>
+                    {user.following}
+                  </strong>{" "}
+                   following
+                </span>
+              </div>
+              {!editing ? (
+                  user.bio ? (
+                      <p className={styles.bio}>{user.bio}</p>
+                  ) : (
+                      <p className={styles.bioPlaceholder}>You don't have a bio yet.</p>
+                  )
+              ) : (
+                  <div className={styles.editBioField}>
+                    <label className={styles.label} htmlFor="bio">
+                      Bio
+                    </label>
+                    <textarea
+                      id="bio"
+                      className={styles.textarea}
+                      rows={3}
+                      value={editBio ?? ""}
+                      onChange={(e) => setEditBio(e.target.value)}
+                      placeholder="Write something about yourself..."
+                    />
+                    {editError && <div className={styles.errorBox}>{editError}</div>}
+                    <div className={styles.editActions}>
+                      <button
+                        type="button"
+                        className={styles.buttonSecondary}
+                        onClick={editProfile}
+                      >
+                        Save
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.buttonGhost}
+                        onClick={cancelEdit}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+              )}
+            </div>
+          </div>
         </section>
 
         <section className={styles.postsSection}>
