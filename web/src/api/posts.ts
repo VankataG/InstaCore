@@ -47,3 +47,10 @@ export type PostResponse = {
         body: request,
     });
  }
+
+ export async function deletePost(token: string, postId: string) {
+   return apiFetch(`/api/posts/${postId}`, {
+      method: "DELETE",
+      token
+   });
+ }
