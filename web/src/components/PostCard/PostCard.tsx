@@ -1,6 +1,6 @@
 import styles from "./PostCard.module.css";
 
-import { type PostResponse } from "../../api/posts";
+import { deletePost, type PostResponse } from "../../api/posts";
 import { useEffect, useState } from "react";
 import { likePost, unlikePost } from "../../api/likes";
 import { CommentSection } from "../CommentSection/CommentSection";
@@ -8,10 +8,11 @@ import { useUser } from "../../hooks/useUser";
 
 type Props = {
     post: PostResponse;
+    onPostDeleted?: (postId: string) => void;
 };
 
 
-export function PostCard({post}: Props){
+export function PostCard({post, onPostDeleted}: Props){
     const userContext = useUser();
     const currentUserUsername = userContext.user?.username;
 
@@ -25,6 +26,10 @@ export function PostCard({post}: Props){
 
     const [viewComments, setViewComments] = useState<boolean>(false);   
     const [commentCount, setCommentCount] = useState<number>(post.comments) 
+
+    const canDelete = currentUserUsername === post.username;
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [deleteError, setDeleteError] = useState<string | null>(null);
 
     useEffect(() => {
       setIsLiked(post.isLikedByCurrentUser);
@@ -47,8 +52,34 @@ export function PostCard({post}: Props){
       }
     }
 
-    
+    async function handleDelete() {
+      setDeleteError(null);
 
+      const token = localStorage.getItem("token");
+      if(!token) {
+        setDeleteError("Please login to delete this post.");
+        return;
+      }
+
+      const confirmDelete = window.confirm("Are you sure you want to delete this post?");
+      if (!confirmDelete) return;
+
+      setIsDeleting(true);
+
+      try {
+        await deletePost(token, post.id);
+
+        if(onPostDeleted) {
+          onPostDeleted(post.id);
+        }
+      } catch (err: any) {
+        setDeleteError(err.message ?? "Failed to delete post.")
+      } finally {
+        setIsDeleting(false);
+      }
+    }
+
+    
     return (
     <article className={styles.card}>
       {username}  
@@ -69,7 +100,16 @@ export function PostCard({post}: Props){
             </button>
             <button onClick={() => setViewComments(prev => !prev)}>
               💬 {commentCount}
-            </button> 
+            </button>
+            {canDelete && (
+          <button
+            className={styles.deleteButton}
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            X
+          </button>
+        )}
           </span>
         </div>
         {viewComments && (
@@ -85,6 +125,9 @@ export function PostCard({post}: Props){
           />
         )}
       </div>
+
+      {deleteError && <div className={styles.errorBox}>{deleteError}</div>}
+
     </article>
   );
 }

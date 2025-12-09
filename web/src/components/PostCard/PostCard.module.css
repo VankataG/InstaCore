@@ -32,7 +32,23 @@
 }
 
 /* .date {
-}
+} */
 
 .stats {
-} */
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+} 
+
+.deleteButton {
+  color: #f97373;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.1rem 1.25rem;
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
