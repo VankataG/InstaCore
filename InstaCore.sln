@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaCore.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaCore.Data", "InstaCore.Data\InstaCore.Data.csproj", "{164135A4-8755-493A-B2C1-4A27205AB230}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstaCore.Tests", "InstaCore.Tests\InstaCore.Tests.csproj", "{535D8BF4-7191-45BB-A610-66A2AC5E71F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{164135A4-8755-493A-B2C1-4A27205AB230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{164135A4-8755-493A-B2C1-4A27205AB230}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{164135A4-8755-493A-B2C1-4A27205AB230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{535D8BF4-7191-45BB-A610-66A2AC5E71F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535D8BF4-7191-45BB-A610-66A2AC5E71F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535D8BF4-7191-45BB-A610-66A2AC5E71F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535D8BF4-7191-45BB-A610-66A2AC5E71F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
