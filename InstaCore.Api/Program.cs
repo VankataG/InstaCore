@@ -71,6 +71,7 @@ namespace InstaCore.Api
             app.UseHttpsRedirection();
 
             app.UseCors(corsPolicy);
+            app.UseStaticFiles();
 
             app.UseErrorHandling();
 
