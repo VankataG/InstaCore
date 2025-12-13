@@ -23,4 +23,9 @@
     <ProjectReference Include="..\InstaCore.Infrastructure\InstaCore.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\avatars\" />
+    <Folder Include="wwwroot\uploads\posts\" />
+  </ItemGroup>
+
 </Project>
