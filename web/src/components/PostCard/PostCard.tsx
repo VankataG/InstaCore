@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { likePost, unlikePost } from "../../api/likes";
 import { CommentSection } from "../CommentSection/CommentSection";
 import { useUser } from "../../hooks/useUser";
+import App from "../../App";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 type Props = {
     post: PostResponse;
@@ -15,10 +18,11 @@ type Props = {
 export function PostCard({post, onPostDeleted}: Props){
     const userContext = useUser();
     const currentUserUsername = userContext.user?.username;
-
+    
+    const username = (post as any).username ?? "User not found";
     const caption = (post as any).caption ?? "";
     const imageUrl = (post as any).imageUrl ?? null;
-    const username = (post as any).username ?? "User not found";
+    const imageSrc = imageUrl && imageUrl.startsWith("http") ? imageUrl : imageUrl ? `${API_BASE_URL}${imageUrl}` : null;
     const createdAt = (post as any).createdAt ? new Date((post as any).createdAt).toLocaleString() : null;
 
     const [isLiked, setIsLiked] = useState<boolean>(post.isLikedByCurrentUser);
@@ -85,7 +89,7 @@ export function PostCard({post, onPostDeleted}: Props){
       {username}  
       {imageUrl && (
         <div className={styles.imageWrapper}>
-          <img src={imageUrl} alt={caption || "Post image"} />
+          <img src={imageSrc} alt={caption || "Post image"} />
         </div>
       )}
 
