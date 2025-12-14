@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createPost, type PostResponse } from "../../api/posts";
 
 import styles from "./CreatePostForm.module.css";
+import { uploadPostImage } from "../../utils/uploads";
 
 type CreatePostFormProps = {
     onPostCreated?: (post: PostResponse) => void;
@@ -9,7 +10,8 @@ type CreatePostFormProps = {
 
 export default function CreatePostForm({ onPostCreated}: CreatePostFormProps) {
     const [caption, setCaption] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -23,18 +25,24 @@ export default function CreatePostForm({ onPostCreated}: CreatePostFormProps) {
             return;
         }
         
-        if (!caption.trim()){
+        if (!caption.trim() && !selectedFile){
             setError(`You cannot create empty post.`);
             return;
         }
         
         setIsLoading(true);
-        const request = { 
-            caption: caption.trim(), 
-            imageUrl: imageUrl.trim() !== "" ? imageUrl.trim() : null
-        };
 
         try {
+            let uploadedUrl: string | null = null;
+            if(selectedFile){
+              uploadedUrl= (await uploadPostImage(selectedFile, token)).url;
+            }
+
+            const request = { 
+                caption: caption.trim(), 
+                imageUrl: uploadedUrl
+            };
+
             const response = await createPost(token, request);
 
             if( onPostCreated) {
@@ -42,7 +50,8 @@ export default function CreatePostForm({ onPostCreated}: CreatePostFormProps) {
             }
 
             setCaption("");
-            setImageUrl("");
+            setSelectedFile(null);
+            
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -67,12 +76,13 @@ export default function CreatePostForm({ onPostCreated}: CreatePostFormProps) {
         </div>
 
         <div className={styles.field}>
-          <label className={styles.label}>Image URL (optional)</label>
+          <label className={styles.label}>Upload image (optional)</label>
           <input
+            type="file"
+            accept="image/*"
             className={styles.input}
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="https://example.com/photo.jpg"
+            onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setSelectedFile(e.target.files?.[0] ?? null)}
+            disabled = {isLoading}
           />
         </div>
 
