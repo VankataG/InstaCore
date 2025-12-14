@@ -8,6 +8,9 @@ import { getUserPosts, type PostResponse } from "../../api/posts";
 import styles from "./MePage.module.css";
 import CreatePostForm from "../../components/CreatePostForm/CreatePostForm";
 import { useUser } from "../../hooks/useUser";
+import { uploadAvatar } from "../../utils/uploads";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function MePage() {
     const navigate = useNavigate();
@@ -20,8 +23,11 @@ export default function MePage() {
 
     const [editing, setEditing] = useState<boolean>(false);
     const [editBio, setEditBio] = useState<string | null>(null);
-    const [editAvatar, setEditAvatar] = useState<string | null>(null);
     const [editError, setEditError] = useState<string | null>(null);
+
+    const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
+    const avatarUrl = user?.avatarUrl ?? null;
+    const avatarSrc = avatarUrl && avatarUrl.startsWith("http") ? avatarUrl : avatarUrl ? `${API_BASE_URL}${avatarUrl}` : null;
 
 
     useEffect(() => {
@@ -58,13 +64,19 @@ export default function MePage() {
             setEditError(null);
             setEditing(true);
             
-            const request = { bio: editBio , avatarUrl: editAvatar};
+            let uploadedUrl: string | null = null;
+            if(selectedAvatar){
+              uploadedUrl= (await uploadAvatar(selectedAvatar, token)).url;
+            }
+
+            const request = { bio: editBio , avatarUrl: uploadedUrl ?? user.avatarUrl};
             await updateProfile(request, token);
             await refreshUser();
         } catch (err: any) {
             setEditError(err.message ?? "Failed to update profile.");
         } finally {
             setEditing(false);
+            setSelectedAvatar(null);
         }
             
     }
@@ -75,7 +87,6 @@ export default function MePage() {
         setEditing(true);
         setEditError(null);
         setEditBio(user.bio);
-        setEditAvatar(user.avatarUrl);
     }
 
     function cancelEdit(){
@@ -111,28 +122,12 @@ export default function MePage() {
         <section className={styles.profileSection}>
           <div className={styles.profileCard}>
             <div className={styles.avatarWrapper}>
-              {"avatarUrl" in user && (user as any).avatarUrl ? (
-                <img
-                  src={(user as any).avatarUrl}
-                  alt={user.username}
-                  className={styles.avatarImage}
-                />
+              {avatarSrc ? (
+                <img src={avatarSrc} alt={user.username} className={styles.avatarImage} />
               ) : (
-                <div className={styles.avatarInitials}>
-                  {user.username[0]?.toUpperCase()}
-                </div>
+                <div className={styles.avatarInitials}>{user.username[0]?.toUpperCase()}</div>
               )}
-              {editing && (
-                  <div className={styles.editAvatarField}>
-                      <label className={styles.label} htmlFor="avatarUrl">Avatar URL</label>
-                      <input id="avatarUrl" 
-                          type="text" 
-                          className={styles.input}
-                          value={editAvatar ?? ""}
-                          onChange={(e) => setEditAvatar(e.target.value)}
-                      />
-                  </div>
-              )}
+
             </div>
             <div className={styles.profileMain}>
               <div className={styles.topRow}>
@@ -183,6 +178,15 @@ export default function MePage() {
                       <p className={styles.bioPlaceholder}>You don't have a bio yet.</p>
                   )
               ) : (
+                <>
+                  <div className={styles.editAvatarField}>
+                      <label className={styles.label} htmlFor="avatarUrl">Avatar</label>
+                      <input id="avatarUrl" 
+                          type="file" 
+                          className={styles.input}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSelectedAvatar(e.target.files?.[0] ?? null)}
+                      />
+                  </div>
                   <div className={styles.editBioField}>
                     <label className={styles.label} htmlFor="bio">
                       Bio
@@ -213,6 +217,7 @@ export default function MePage() {
                       </button>
                     </div>
                   </div>
+                  </>
               )}
             </div>
           </div>
