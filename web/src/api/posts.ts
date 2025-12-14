@@ -5,6 +5,7 @@ export type PostResponse = {
     caption: string;
     imageUrl: string | null;
     username: string;
+    userAvatarUrl: string | null;
     createdAt: string;
     likes: number;
     comments: number;
