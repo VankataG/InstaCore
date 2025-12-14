@@ -19,7 +19,6 @@ namespace InstaCore.Data.Configuration
 
             entity
                 .Property(p => p.Caption)
-                .IsRequired()
                 .HasMaxLength(300);
 
             entity

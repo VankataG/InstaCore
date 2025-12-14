@@ -8,7 +8,7 @@
 
         public User User { get; set; } = null!;
 
-        public required string Caption { get; set; }
+        public string? Caption { get; set; }
 
         public string? ImageUrl { get; set; }
 
