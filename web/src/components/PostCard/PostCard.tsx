@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { likePost, unlikePost } from "../../api/likes";
 import { CommentSection } from "../CommentSection/CommentSection";
 import { useUser } from "../../hooks/useUser";
-import App from "../../App";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -24,6 +23,9 @@ export function PostCard({post, onPostDeleted}: Props){
     const imageUrl = (post as any).imageUrl ?? null;
     const imageSrc = imageUrl && imageUrl.startsWith("http") ? imageUrl : imageUrl ? `${API_BASE_URL}${imageUrl}` : null;
     const createdAt = (post as any).createdAt ? new Date((post as any).createdAt).toLocaleString() : null;
+
+    const userAvatarUrl = (post as any).userAvatarUrl ?? null;
+    const avatarSrc = userAvatarUrl && userAvatarUrl.startsWith("http") ? userAvatarUrl : userAvatarUrl ? `${API_BASE_URL}${userAvatarUrl}` : undefined;
 
     const [isImageOpen, setIsImageOpen] = useState(false);
 
@@ -90,7 +92,17 @@ export function PostCard({post, onPostDeleted}: Props){
     <article className={styles.card}>
       <header className={styles.header}>
         <div className={styles.userBlock}>
-          <div className={styles.avatar}>{username[0]?.toUpperCase()}</div>
+          {avatarSrc ? (
+            <img 
+            src={avatarSrc}
+            className={styles.avatar}
+            />
+          ) : (
+            <div className={styles.avatar}>
+              {username[0]?.toUpperCase()}
+            </div>
+          )}
+
           <div className={styles.userMeta}>
             <div className={styles.username}>{username}</div>
             {createdAt && <div className={styles.date}>{createdAt}</div>}
