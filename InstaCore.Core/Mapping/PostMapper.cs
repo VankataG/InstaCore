@@ -9,6 +9,7 @@ namespace InstaCore.Core.Mapping
         {
             Id = post.Id,
             Username = user.Username,
+            UserAvatarUrl = user.AvatarUrl,
             Caption = post.Caption,
             ImageUrl = post.ImageUrl,
             Likes = post.Likes.Count,
@@ -20,6 +21,7 @@ namespace InstaCore.Core.Mapping
         {
             Id = post.Id,
             Username = post.User.Username,
+            UserAvatarUrl = post.User.AvatarUrl,
             Caption = post.Caption,
             ImageUrl = post.ImageUrl,
             Likes = post.Likes.Count,

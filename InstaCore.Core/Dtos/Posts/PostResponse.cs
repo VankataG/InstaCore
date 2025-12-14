@@ -6,7 +6,9 @@
 
         public required string Username { get; set; }
 
-        public required string Caption { get; set; }
+        public string? UserAvatarUrl { get; set; }
+
+        public string? Caption { get; set; }
 
         public string? ImageUrl { get; set; }
 
