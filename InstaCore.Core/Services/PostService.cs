@@ -27,8 +27,8 @@ namespace InstaCore.Core.Services
 
         public async Task<PostResponse> CreateAsync(Guid userId, CreatePostRequest request)
         {
-            if (string.IsNullOrEmpty(request.Caption))
-                throw new NotFoundException("Caption cannot be empty.");
+            if (string.IsNullOrEmpty(request.Caption) && string.IsNullOrEmpty(request.ImageUrl))
+                throw new NotFoundException("A post must contain either a caption or an image.");
             
 
             User? user = await userRepository.GetByIdAsync(userId);
