@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using InstaCore.Core.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,92 +11,27 @@ namespace InstaCore.Api.Controllers
     public class UploadsController : ControllerBase
     {
         private readonly IWebHostEnvironment env;
+        private readonly IUploadsService uploadsService;
 
-        public UploadsController(IWebHostEnvironment env)
+        public UploadsController(IWebHostEnvironment env, IUploadsService uploadsService)
         {
             this.env = env;
+            this.uploadsService = uploadsService;
         }
 
 
-
         [HttpPost("avatar")]
-        public async Task<IActionResult> UploadAvatar(IFormFile file)
+        public async Task<IActionResult> UploadAvatar([FromForm] IFormFile file)
         {
-            if (file is null)
-                return BadRequest("File is required");
-
-            if (file.Length == 0)
-                return BadRequest("Empty file");
-
-            long maxBytes = 5 * 1024 * 1024;
-
-            if (file.Length > maxBytes)
-                return BadRequest("File is too large to upload");
-
-
-            List<string> allowedExts = new() { ".jpg", ".jpeg", ".png", ".webp" };
-
-            string? ext = Path.GetExtension(file.FileName).ToLower();
-
-            if (!allowedExts.Contains(ext))
-                return BadRequest("Extension not allowed");
-
-
-
-            string filename = Guid.NewGuid().ToString("N") + ext;
-
-            string dirPath = Path.Combine(env.WebRootPath, "uploads", "avatars");
-            Directory.CreateDirectory(dirPath);
-
-            string filePath = Path.Combine(dirPath, filename);
-
-            using (var fs = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fs);
-            }
-
-            string url = $"/uploads/avatars/{filename}";
+            string url = await uploadsService.UploadImageAsync(file, env.WebRootPath, "avatars");
 
             return Ok(new { url });
         }
 
         [HttpPost("post-image")]
-        public async Task<IActionResult> UploadPostImage([FromForm]IFormFile file)
+        public async Task<IActionResult> UploadPostImage([FromForm] IFormFile file)
         {
-            if (file is null)
-                return BadRequest("File is required");
-
-            if (file.Length == 0)
-                return BadRequest("Empty file");
-
-            long maxBytes = 5 * 1024 * 1024;
-
-            if (file.Length > maxBytes)
-                return BadRequest("File is too large to upload");
-
-
-            List<string> allowedExts = new() { ".jpg", ".jpeg", ".png", ".webp" };
-
-            string? ext = Path.GetExtension(file.FileName).ToLower();
-
-            if (!allowedExts.Contains(ext))
-                return BadRequest("Extension not allowed");
-
-
-
-            string filename = Guid.NewGuid().ToString("N") + ext;
-
-            string dirPath = Path.Combine(env.WebRootPath, "uploads", "posts");
-            Directory.CreateDirectory(dirPath);
-
-            string filePath = Path.Combine(dirPath, filename);
-
-            using (var fs = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fs);
-            }
-
-            string url = $"/uploads/posts/{filename}";
+            string url = await uploadsService.UploadImageAsync(file, env.WebRootPath, "posts");
 
             return Ok(new { url });
         }
