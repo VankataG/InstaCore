@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using InstaCore.Core.Dtos;
 using InstaCore.Core.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,17 +22,19 @@ namespace InstaCore.Api.Controllers
 
 
         [HttpPost("avatar")]
-        public async Task<IActionResult> UploadAvatar([FromForm] IFormFile file)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadAvatar([FromForm] UploadFileRequest request)
         {
-            string url = await uploadsService.UploadImageAsync(file, env.WebRootPath, "avatars");
+            string url = await uploadsService.UploadImageAsync(request.File, env.WebRootPath, "avatars");
 
             return Ok(new { url });
         }
 
         [HttpPost("post-image")]
-        public async Task<IActionResult> UploadPostImage([FromForm] IFormFile file)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadPostImage([FromForm] UploadFileRequest request)
         {
-            string url = await uploadsService.UploadImageAsync(file, env.WebRootPath, "posts");
+            string url = await uploadsService.UploadImageAsync(request.File, env.WebRootPath, "posts");
 
             return Ok(new { url });
         }

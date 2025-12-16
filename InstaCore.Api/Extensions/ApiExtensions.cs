@@ -79,6 +79,7 @@ namespace InstaCore.Api.Extensions
                         Array.Empty<string>()
                     }
                 });
+
             });
 
             return services;
