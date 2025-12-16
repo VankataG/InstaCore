@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { likePost, unlikePost } from "../../api/likes";
 import { CommentSection } from "../CommentSection/CommentSection";
 import { useUser } from "../../hooks/useUser";
+import { Link } from "react-router-dom";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -104,7 +105,9 @@ export function PostCard({post, onPostDeleted}: Props){
           )}
 
           <div className={styles.userMeta}>
-            <div className={styles.username}>{username}</div>
+            <Link to={`/u/${username}`}>
+              <div className={styles.username}>{username}</div>
+            </Link>
             {createdAt && <div className={styles.date}>{createdAt}</div>}
           </div>
         </div>
